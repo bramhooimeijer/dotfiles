@@ -37,7 +37,7 @@ set splitbelow
 set splitright
 
 " Clipboard: Use systemclipboard when yanking. 
-set clipboard=unnamed
+set clipboard=unnamedplus
 
 " Dirs:
 " Use persistent undo.
