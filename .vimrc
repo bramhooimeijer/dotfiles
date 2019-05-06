@@ -1,4 +1,6 @@
-set nocompatible
+if &compatible
+  set nocompatible
+endif
 
 " Syntax: Show syntax and indent properly
 syntax on
@@ -40,20 +42,26 @@ set splitright
 set clipboard=unnamedplus
 
 " Dirs:
-" Use persistent undo.
-if !isdirectory($HOME."/.vim/undo")
-    call mkdir($HOME."/.vim/undo", "p", 0700)
+" Move temporary files to a secure location to protect against CVE-2017-1000382
+if exists('$XDG_CACHE_HOME')
+  let &g:directory=$XDG_CACHE_HOME
+else
+  let &g:directory=$HOME . '/.cache'
 endif
-set undodir=~/.vim/undo//
+let &g:undodir=&g:directory . '/vim/undo//'
+let &g:backupdir=&g:directory . '/vim/backup//'
+let &g:directory.='/vim/swap//'
+" Create directories if they doesn't exist
+if ! isdirectory(expand(&g:directory))
+  silent! call mkdir(expand(&g:directory), 'p', 0700)
+endif
+if ! isdirectory(expand(&g:backupdir))
+  silent! call mkdir(expand(&g:backupdir), 'p', 0700)
+endif
+if ! isdirectory(expand(&g:undodir))
+  silent! call mkdir(expand(&g:undodir), 'p', 0700)
+endif
 set undofile
-if !isdirectory($HOME."/.vim/swap")
-    call mkdir($HOME."/.vim/swap", "p", 0700)
-endif
-set directory=~/.vim/swap//
-if !isdirectory($HOME."/.vim/backup")
-    call mkdir($HOME."/.vim/backup", "p", 0700)
-endif
-set backupdir=~/.vim/backup//
 
 " Files:
 set encoding=utf-8
@@ -62,3 +70,4 @@ set writebackup
 set fileformat=unix
 set undolevels=1000
 set undoreload=10000
+
