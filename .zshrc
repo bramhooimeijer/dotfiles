@@ -32,6 +32,10 @@ zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]}' 'm:{[:lower:]
 autoload -Uz compinit
 compinit
 
+# Source aliases and directory hashes
+source .zshrc.alias.local
+alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+
 # Start tmux if available and if interactive. Attach to current session, such that detaching stays possible.
 if command -v tmux &> /dev/null && [ -n "$PS1" ]  && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
 	# Attach to current session, detaching still possible
