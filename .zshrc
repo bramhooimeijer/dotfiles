@@ -33,7 +33,7 @@ autoload -Uz compinit
 compinit
 
 # Source aliases and directory hashes
-source .zshrc.alias.local
+[[ -f .zshrc.alias.local ]] && source .zshrc.alias.local
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
 # Start tmux if available and if interactive. Attach to current session, such that detaching stays possible.
