@@ -50,7 +50,6 @@ else
 endif
 let &g:undodir=&g:directory . '/vim/undo//'
 let &g:backupdir=&g:directory . '/vim/backup//'
-let &g:directory.='/vim/swap//'
 " Create directories if they doesn't exist
 if ! isdirectory(expand(&g:directory))
   silent! call mkdir(expand(&g:directory), 'p', 0700)
