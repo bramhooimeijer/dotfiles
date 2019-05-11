@@ -2,11 +2,15 @@ if &compatible
   set nocompatible
 endif
 
+"""""""""""
+" Options:"
+"""""""""""
+
 " Syntax: Show syntax and indent properly
 syntax on
 filetype plugin indent on
 
-" Visual: 
+" Visual:
 set number
 set ruler
 set laststatus=2
@@ -21,24 +25,27 @@ set textwidth=0
 set backspace=indent,eol,start
 set nojoinspaces
 
-" Tabs: ensure tabs are shown and inserted as 2 spaces. 
+" Tabs: ensure tabs are shown and inserted as 2 spaces.
 set tabstop=2
 set shiftwidth=2
 set expandtab
 set smarttab
 set shiftround
 
-" Search: 
-set hlsearch 
+" Search:
+set hlsearch
 set ignorecase
 set incsearch
-set smartcase 
+set smartcase
+for s:c in ['a', 'A', '<Insert>', 'i', 'I', 'gI', 'gi', 'o', 'O']
+    exe 'nnoremap ' . s:c . ' :nohlsearch<CR>' . s:c
+endfor " clear highlight when inserting
 
-" Splits: 
+" Splits:
 set splitbelow
 set splitright
 
-" Clipboard: Use systemclipboard when yanking. 
+" Clipboard: Use systemclipboard when yanking.
 set clipboard=unnamedplus
 
 " Dirs:
@@ -69,4 +76,39 @@ set writebackup
 set fileformat=unix
 set undolevels=1000
 set undoreload=10000
+
+""""""""""""""
+" Functions: "
+""""""""""""""
+
+" PasteMode: Automatically enter pastemode when pasting
+let &t_SI .= "\<Esc>[?2004h"
+let &t_EI .= "\<Esc>[?2004l"
+inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
+function! XTermPasteBegin()
+  set pastetoggle=<Esc>[201~
+  set paste
+  return ""
+endfunction
+
+" KeyBinds:
+nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:noh<CR>
+
+"""""""""""""""""""
+" Plugin_settings:"
+"""""""""""""""""""
+
+" Vim_easy_align:
+nmap ga <Plug>(EasyAlign)
+xmap ga <Plug>(EasyAlign)
+
+" Plugins:
+call plug#begin('$HOME/.vim/plugged')
+
+Plug 'lervag/vimtex'
+Plug 'junegunn/vim-easy-align'
+Plug 'vhda/verilog_systemverilog.vim'
+Plug 'tpope/vim-commentary'
+
+call plug#end()
 
