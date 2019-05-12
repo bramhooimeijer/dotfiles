@@ -1,6 +1,9 @@
 if &compatible
   set nocompatible
 endif
+if !has('gui_running')
+  set t_Co=256
+endif
 
 """""""""""
 " Options:"
@@ -16,7 +19,8 @@ set ruler
 set laststatus=2
 set wildmenu
 set title
-set showcmd
+set noshowcmd
+set noshowmode
 
 " Textual: No wrapping, proper backspace behavior
 set nowrap
@@ -102,13 +106,17 @@ nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:noh<CR>
 nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
 
+" NerdTree:
+noremap <C-n> :NERDTreeToggle<CR> 
 " Plugins:
 call plug#begin('$HOME/.vim/plugged')
 
-Plug 'lervag/vimtex'
+Plug 'itchyny/lightline.vim' 
+Plug 'christoomey/vim-tmux-navigator/'
 Plug 'junegunn/vim-easy-align'
-Plug 'vhda/verilog_systemverilog.vim'
 Plug 'tpope/vim-commentary'
-
+Plug 'scrooloose/nerdtree'
+Plug 'vhda/verilog_systemverilog.vim'
+Plug 'lervag/vimtex'
 call plug#end()
 
