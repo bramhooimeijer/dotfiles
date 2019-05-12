@@ -10,7 +10,7 @@ prompt grml
 
 # Create a function to detect cmd mode for vi
 function zle-line-init zle-keymap-select {
-    VIM_PROMPT="[% CMD]%"
+    VIM_PROMPT="[% NORMAL]%"
     RPS1="${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/} $EPS1"
     zle reset-prompt
 }
@@ -35,11 +35,12 @@ compinit
 # Source aliases and directory hashes
 [[ -f .zshrc.alias.local ]] && source .zshrc.alias.local
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+export TERM=xterm-256color
 
 # Start tmux if available and if interactive. Attach to current session, such that detaching stays possible.
 if command -v tmux &> /dev/null && [ -n "$PS1" ]  && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
 	# Attach to current session, detaching still possible
 	#tmux attach || exec tmux new-session
 	# create new session
-	exec tmux
+	exec tmux -2
 fi
