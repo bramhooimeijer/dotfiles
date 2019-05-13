@@ -97,6 +97,8 @@ endfunction
 
 " KeyBinds:
 nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:noh<CR>
+let maplocalleader = "-"
+let mapleader = "\<Space>"
 
 """""""""""""""""""
 " Plugin_settings:"
