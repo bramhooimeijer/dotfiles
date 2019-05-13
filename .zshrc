@@ -33,7 +33,7 @@ autoload -Uz compinit
 compinit
 
 # Source aliases and directory hashes
-[[ -f .zshrc.alias.local ]] && source .zshrc.alias.local
+[[ -f $HOME/.zshrc.alias.local ]] && source $HOME/.zshrc.alias.local
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 export TERM=xterm-256color
 
