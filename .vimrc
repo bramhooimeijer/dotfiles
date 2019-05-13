@@ -10,8 +10,8 @@ endif
 """""""""""
 
 " Syntax: Show syntax and indent properly
-syntax on
 filetype plugin indent on
+syntax on
 
 " Visual:
 set number
@@ -107,11 +107,15 @@ nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
 
 " NerdTree:
-noremap <C-n> :NERDTreeToggle<CR> 
+noremap <C-n> :NERDTreeToggle<CR>
+
+" VimTex:
+let g:tex_flavor = 'latex'
+
 " Plugins:
 call plug#begin('$HOME/.vim/plugged')
 
-Plug 'itchyny/lightline.vim' 
+Plug 'itchyny/lightline.vim'
 Plug 'christoomey/vim-tmux-navigator/'
 Plug 'junegunn/vim-easy-align'
 Plug 'tpope/vim-commentary'
