@@ -99,6 +99,7 @@ endfunction
 nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:noh<CR>
 let maplocalleader = "-"
 let mapleader = "\<Space>"
+cmap w!! w !sudo tee > /dev/null %
 
 """""""""""""""""""
 " Plugin_settings:"
@@ -121,9 +122,19 @@ noremap <C-n> :NERDTreeToggle<CR>
 " VimTex:
 let g:tex_flavor = 'latex'
 
+" Neosnippet:
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+imap <C-x> <Plug>(neosnippet_expand_or_jump)
+"let g:neosnippet#enable_snipmate_compatibility = 1
+"let g:neosnippet#snippets_directory='$HOME/.vim/plugged/vim-snippets/snippets'
+
 " Plugins:
 call plug#begin('$HOME/.vim/plugged')
-
+Plug 'shougo/neosnippet.vim'
+Plug 'shougo/neosnippet-snippets'
+Plug 'honza/vim-snippets'
 Plug 'itchyny/lightline.vim'
 Plug 'christoomey/vim-tmux-navigator/'
 Plug 'junegunn/vim-easy-align'
