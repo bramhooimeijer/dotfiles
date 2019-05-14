@@ -104,6 +104,13 @@ let mapleader = "\<Space>"
 " Plugin_settings:"
 """""""""""""""""""
 
+" Vim_Tmux_Navigator:
+nnoremap <silent> <C-a>h :TmuxNavigateLeft<cr>
+nnoremap <silent> <C-a>j :TmuxNavigateDown<cr>
+nnoremap <silent> <C-a>k :TmuxNavigateUp<cr>
+nnoremap <silent> <C-a>l :TmuxNavigateRight<cr>
+nnoremap <silent> <C-a>\ :TmuxNavigatePrevious<cr>
+
 " Vim_easy_align:
 nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
