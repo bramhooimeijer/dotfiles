@@ -17,6 +17,8 @@ syntax on
 set number
 set ruler
 set laststatus=2
+set cot+=longest
+set wildmode=longest:full,full
 set wildmenu
 set title
 set noshowcmd
