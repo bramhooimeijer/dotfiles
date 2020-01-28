@@ -144,16 +144,32 @@ nnoremap <C-n> :NERDTreeToggle<CR>
 
 " VimTex:
 let g:tex_flavor = 'latex'
+let g:tex_fast = "cmMprsSvV"
+
+" Deoplete:
+let g:deoplete#enable_at_startup = 1
+inoremap <silent><expr> <TAB>
+\ pumvisible() ? "\<C-n>" :
+\ <SID>check_back_space() ? "\<TAB>" :
+\ deoplete#manual_complete()
+function! s:check_back_space() abort "{{{
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction"}}}
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " Neosnippet:
 imap <C-u>     <Plug>(neosnippet_expand_or_jump)
 smap <C-u>     <Plug>(neosnippet_expand_or_jump)
 xmap <C-u>     <Plug>(neosnippet_expand_target)
-"let g:neosnippet#enable_snipmate_compatibility = 1
-"let g:neosnippet#snippets_directory='$HOME/.vim/plugged/vim-snippets/snippets'
+let g:neosnippet#enable_snipmate_compatibility = 1
+let g:neosnippet#snippets_directory='$HOME/.vim/plugged/vim-snippets/snippets,$CLOUD_HOME/Syncs/Vim/snippets'
 
 " Plugins:
 call plug#begin('$HOME/.vim/plugged')
+Plug 'Shougo/deoplete.nvim'
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
 Plug 'shougo/neosnippet.vim'
 Plug 'shougo/neosnippet-snippets'
 Plug 'honza/vim-snippets'
