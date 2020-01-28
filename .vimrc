@@ -24,12 +24,17 @@ set title
 set noshowcmd
 set noshowmode
 
-" Textual: No wrapping, proper backspace behavior
-set nowrap
+" Format: Soft wrapping, proper backspace behavior
+set wrap
+set linebreak
 set wrapmargin=0
 set textwidth=0
 set backspace=indent,eol,start
 set nojoinspaces
+
+" Textwidth: Highlight column 79
+highlight ColorColumn ctermbg=magenta
+call matchadd('ColorColumn', '\%79v', 100)
 
 " Tabs: ensure tabs are shown and inserted as 2 spaces.
 set tabstop=2
