@@ -115,13 +115,14 @@ function! XTermPasteBegin()
   return ""
 endfunction
 
-" KeyBinds:
+" KeyBinds: F5 removes trailing spaces
 nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:noh<CR>
 let maplocalleader = "-"
 let mapleader = "\<Space>"
 cmap w!! w !sudo tee > /dev/null %
 nnoremap <leader>j :m .+1<CR>==
 nnoremap <leader>k :m .-2<CR>==
+nnoremap <leader>r :%s/\<<C-r><C-w>\>/
 
 """""""""""""""""""
 " Plugin_settings:"
