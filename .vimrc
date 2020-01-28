@@ -80,6 +80,19 @@ if ! isdirectory(expand(&g:undodir))
 endif
 set undofile
 
+" Spelling:
+set spellfile=$CLOUD_HOME/Syncs/Vim/spell/en.utf-8.add
+
+augroup spellfiles
+  autocmd!
+  " Per file spellfile
+  autocmd BufNewFile,BufRead * let &l:spellfile .= ',' . expand('%:p:h') . '/.' .
+  \ expand('%:t') . '.utf-8.add'
+
+  " Per file type spellfile (FileType autocmd seems to fire before BufNewFile)
+  autocmd BufNewFile,BufRead *.tex setlocal spellfile+=$CLOUD_HOME/Syncs/Vim/spell/tex.utf-8.add
+augroup END
+
 " Files:
 set encoding=utf-8
 set autoread
