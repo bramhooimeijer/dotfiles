@@ -12,17 +12,23 @@ endif
 " Syntax: Show syntax and indent properly
 filetype plugin indent on
 syntax on
+hi Search ctermbg=LightGray
+hi Search ctermfg=Red
 
 " Visual:
 set number
 set ruler
 set laststatus=2
-set cot+=longest
-set wildmode=longest:full,full
-set wildmenu
 set title
 set noshowcmd
 set noshowmode
+
+" Completion:
+set wildmode=longest:full,full
+set wildmenu
+set completeopt+=longest,menuone,noselect,noinsert
+set shortmess+=c   " Shut off completion messages
+set belloff+=ctrlg " If Vim beeps during completion
 
 " Format: Soft wrapping, proper backspace behavior
 set wrap
@@ -62,12 +68,12 @@ set clipboard=unnamedplus
 " Dirs:
 " Move temporary files to a secure location to protect against CVE-2017-1000382
 if exists('$XDG_CACHE_HOME')
-  let &g:directory=$XDG_CACHE_HOME
+  let &g:directory=$XDG_CACHE_HOME . '/vim/swap//'
 else
-  let &g:directory=$HOME . '/.cache'
+  let &g:directory=$HOME . '/.cache/vim/swap//'
 endif
-let &g:undodir=&g:directory . '/vim/undo//'
-let &g:backupdir=&g:directory . '/vim/backup//'
+let &g:undodir=&g:directory . '/../../vim/undo//'
+let &g:backupdir=&g:directory . '/../../vim/backup//'
 " Create directories if they doesn't exist
 if ! isdirectory(expand(&g:directory))
   silent! call mkdir(expand(&g:directory), 'p', 0700)
@@ -146,17 +152,12 @@ nnoremap <C-n> :NERDTreeToggle<CR>
 let g:tex_flavor = 'latex'
 let g:tex_fast = "cmMprsSvV"
 
-" Deoplete:
-let g:deoplete#enable_at_startup = 1
-inoremap <silent><expr> <TAB>
-\ pumvisible() ? "\<C-n>" :
-\ <SID>check_back_space() ? "\<TAB>" :
-\ deoplete#manual_complete()
-function! s:check_back_space() abort "{{{
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
-endfunction"}}}
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" Mucomplete:
+" add neosnippets to mucomplete chain
+let g:mucomplete#chains = {
+      \ 'vim'     : ['path', 'cmd', 'keyn'],
+      \ 'default' : ['path', 'omni', 'nsnp', 'keyn',  'dict', 'uspl']
+      \}
 
 " Neosnippet:
 imap <C-u>     <Plug>(neosnippet_expand_or_jump)
@@ -167,18 +168,21 @@ let g:neosnippet#snippets_directory='$HOME/.vim/plugged/vim-snippets/snippets,$C
 
 " Plugins:
 call plug#begin('$HOME/.vim/plugged')
-Plug 'Shougo/deoplete.nvim'
+" Completion:
+Plug 'lifepillar/vim-mucomplete'
+Plug 'wellle/tmux-complete.vim'
+" Snippets:
 Plug 'roxma/nvim-yarp'
 Plug 'roxma/vim-hug-neovim-rpc'
 Plug 'shougo/neosnippet.vim'
 Plug 'shougo/neosnippet-snippets'
 Plug 'honza/vim-snippets'
-Plug 'itchyny/lightline.vim'
-Plug 'christoomey/vim-tmux-navigator/'
-Plug 'junegunn/vim-easy-align'
-Plug 'tpope/vim-commentary'
-Plug 'scrooloose/nerdtree'
-Plug 'vhda/verilog_systemverilog.vim'
-Plug 'lervag/vimtex'
-call plug#end()
 
+Plug 'itchyny/lightline.vim'            " Theme
+Plug 'christoomey/vim-tmux-navigator/'  " Allows pane change using TMUX
+Plug 'junegunn/vim-easy-align'          " Improves = align using ga=
+Plug 'tpope/vim-commentary'             " Toggle comment using gc
+Plug 'scrooloose/nerdtree'              " Opens filetree using C-n in normal mode
+Plug 'vhda/verilog_systemverilog.vim'   " Extensions for coding in .sv
+Plug 'lervag/vimtex'                    " Extensions for markup in .tex
+call plug#end()
