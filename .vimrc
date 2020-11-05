@@ -5,23 +5,39 @@ if !has('gui_running')
   set t_Co=256
 endif
 
-"""""""""""
-" Options:"
-"""""""""""
+""""""""""""
+" Options: "
+""""""""""""
 
 " Syntax: Show syntax and indent properly
 filetype plugin indent on
 syntax on
-hi Search ctermbg=LightGray
-hi Search ctermfg=Red
+
+" Highlighting: Fix colors of search, spell and bad white space
+hi Search ctermbg=Gray
+hi Search ctermfg=Yellow
+hi SpellBad cterm=underline
+hi SpellBad ctermbg=LightGray
+hi SpellBad ctermfg=Red
+hi BadWhitespace ctermbg=red
+augroup highlightspace
+  au!
+  au InsertEnter * match BadWhitespace /\s\+\%#\@<!$/
+  au InsertLeave * match BadWhitespace /\s\+$/
+augroup END
 
 " Visual:
-set number
-set ruler
+set number relativenumber
+augroup numbertoggle
+  au!
+  au BufEnter,FocusGained,InsertLeave * set relativenumber
+  au BufLeave,FocusLost,InsertEnter   * set norelativenumber
+augroup END
 set laststatus=2
 set title
 set noshowcmd
 set noshowmode
+set visualbell
 
 " Completion:
 set wildmode=longest:full,full
@@ -39,13 +55,10 @@ set backspace=indent,eol,start
 set nojoinspaces
 
 " Textwidth: Highlight column 79
-highlight ColorColumn ctermbg=magenta
-call matchadd('ColorColumn', '\%79v', 100)
+nnoremap <leader>c :execute "set colorcolumn=" . (&colorcolumn == "" ? "80" : "")<CR>
 
 " Tabs: ensure tabs are shown and inserted as 2 spaces.
-set tabstop=2
-set shiftwidth=2
-set expandtab
+set tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 set smarttab
 set shiftround
 
@@ -96,7 +109,7 @@ augroup spellfiles
   \ expand('%:t') . '.utf-8.add'
 
   " Per file type spellfile (FileType autocmd seems to fire before BufNewFile)
-  autocmd BufNewFile,BufRead *.tex setlocal spellfile+=$CLOUD_HOME/Syncs/Vim/spell/tex.utf-8.add
+  autocmd BufNewFile,BufRead *.tex set spell | setlocal spellfile+=$CLOUD_HOME/Syncs/Vim/spell/tex.utf-8.add
 augroup END
 
 " Files:
@@ -131,8 +144,23 @@ nnoremap <leader>k :m .-2<CR>==
 nnoremap <leader>r :%s/\<<C-r><C-w>\>/
 
 """""""""""""""""""
-" Plugin_settings:"
+" File Specifics: "
 """""""""""""""""""
+
+augroup fileOptions
+ au!
+ au BufNewFile,BufRead *.py call SetPythonOptions()
+augroup END
+
+function SetPythonOptions()
+  setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab
+  setlocal textwidth=79
+  setlocal autoindent
+endfunction
+
+""""""""""""""""""""
+" Plugin_settings: "
+""""""""""""""""""""
 
 " Vim_Tmux_Navigator:
 nnoremap <silent> <C-a>h :TmuxNavigateLeft<cr>
@@ -158,6 +186,8 @@ let g:mucomplete#chains = {
       \ 'vim'     : ['path', 'cmd', 'keyn'],
       \ 'default' : ['path', 'omni', 'nsnp', 'keyn',  'dict', 'uspl']
       \}
+let g:jedi#auto_vim_configuration = 0
+let g:jedi#popup_on_dot = 0
 
 " Neosnippet:
 imap <C-u>     <Plug>(neosnippet_expand_or_jump)
@@ -185,4 +215,7 @@ Plug 'tpope/vim-commentary'             " Toggle comment using gc
 Plug 'scrooloose/nerdtree'              " Opens filetree using C-n in normal mode
 Plug 'vhda/verilog_systemverilog.vim'   " Extensions for coding in .sv
 Plug 'lervag/vimtex'                    " Extensions for markup in .tex
+Plug 'nathangrigg/vim-beancount'        " Arranges completion for use with beancount accounting software
+Plug 'tmhedberg/SimpylFold', { 'for': 'python' }
+Plug 'https://github.com/davidhalter/jedi-vim', { 'for': 'python' }
 call plug#end()
