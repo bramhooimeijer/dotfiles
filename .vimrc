@@ -20,7 +20,6 @@ if has('gui_running')
   set hidden
   set guifont=Noto_Mono_for_Powerline:h10:cANSI:qDRAFT
 endif
-colorscheme industry
 
 if !exists('$CLOUD_HOME')
   let $CLOUD_HOME=$HOME
@@ -33,6 +32,11 @@ endif
 " Syntax: Show syntax and indent properly
 filetype plugin indent on
 syntax on
+
+" Colorscheme:
+set termguicolors
+let ayucolor="dark"
+colorscheme ayu
 
 " Highlighting: Fix colors of search, spell and bad white space
 hi Search ctermbg=Gray
@@ -242,6 +246,7 @@ Plug 'shougo/neosnippet-snippets'
 Plug 'honza/vim-snippets'
 
 Plug 'itchyny/lightline.vim'            " Theme
+Plug 'ayu-theme/ayu-vim'                " Colorscheme
 Plug 'christoomey/vim-tmux-navigator/'  " Allows pane change using TMUX
 Plug 'junegunn/vim-easy-align'          " Improves = align using ga=
 Plug 'tpope/vim-commentary'             " Toggle comment using gc
