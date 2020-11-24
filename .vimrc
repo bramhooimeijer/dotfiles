@@ -33,11 +33,6 @@ endif
 filetype plugin indent on
 syntax on
 
-" Colorscheme:
-set termguicolors
-let ayucolor="dark"
-colorscheme ayu
-
 " Highlighting: Fix colors of search, spell and bad white space
 hi Search ctermbg=Gray
 hi Search ctermfg=Yellow
@@ -257,3 +252,8 @@ Plug 'nathangrigg/vim-beancount'        " Arranges completion for use with beanc
 Plug 'tmhedberg/SimpylFold', { 'for': 'python' }
 Plug 'https://github.com/davidhalter/jedi-vim', { 'for': 'python' }
 call plug#end()
+
+" Colorscheme:
+set termguicolors
+let ayucolor="dark"
+colorscheme ayu
