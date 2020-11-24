@@ -1,3 +1,4 @@
+[[ -f $HOME/.zshrc.grml ]] && source $HOME/.zshrc.grml
 # Set keymapping to VI-mode in zsh
 bindkey -v
 setopt vi
