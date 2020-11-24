@@ -5,6 +5,27 @@ if !has('gui_running')
   set t_Co=256
 endif
 
+" gVIM specific
+if has('gui_running')
+  set langmenu=en_US.UTF-8    " sets the language of the menu (gvim)
+  language en                 " sets the language of the messages / ui (vim)
+  set guioptions-=m  "menu bar
+  set guioptions-=T  "toolbar
+  set guioptions-=r  "scrollbar on the right
+  set guioptions-=L  "scrollbar on the left (upon window split)
+  if has('win32')||has('win64')
+    let $HOME="C:/Localdata/"
+	set viminfo+=nC:/Localdata/.vim
+  endif
+  set hidden
+  set guifont=Noto_Mono_for_Powerline:h10:cANSI:qDRAFT
+endif
+colorscheme industry
+
+if !exists('$CLOUD_HOME')
+  let $CLOUD_HOME=$HOME
+endif
+
 """"""""""""
 " Options: "
 """"""""""""
@@ -42,7 +63,7 @@ set visualbell
 " Completion:
 set wildmode=longest:full,full
 set wildmenu
-set completeopt+=longest,menuone,noselect,noinsert
+set completeopt+=menuone,noselect,noinsert
 set shortmess+=c   " Shut off completion messages
 set belloff+=ctrlg " If Vim beeps during completion
 
@@ -76,10 +97,13 @@ set splitbelow
 set splitright
 
 " Clipboard: Use systemclipboard when yanking.
+if has('win32') || has('win64')
+set clipboard=unnamed
+else
 set clipboard=unnamedplus
+endif
 
 " Dirs:
-" Move temporary files to a secure location to protect against CVE-2017-1000382
 if exists('$XDG_CACHE_HOME')
   let &g:directory=$XDG_CACHE_HOME . '/vim/swap//'
 else
@@ -87,6 +111,7 @@ else
 endif
 let &g:undodir=&g:directory . '/../../vim/undo//'
 let &g:backupdir=&g:directory . '/../../vim/backup//'
+
 " Create directories if they doesn't exist
 if ! isdirectory(expand(&g:directory))
   silent! call mkdir(expand(&g:directory), 'p', 0700)
@@ -100,7 +125,11 @@ endif
 set undofile
 
 " Spelling:
-set spellfile=$CLOUD_HOME/Syncs/Vim/spell/en.utf-8.add
+let spelldirectory=$CLOUD_HOME . '/Syncs/Vim/spell//'
+if ! isdirectory(expand(spelldirectory))
+  silent! call mkdir(expand(spelldirectory), 'p', 0700)
+endif
+execute "set spellfile=".spelldirectory . 'en.utf-8.add'
 
 augroup spellfiles
   autocmd!
@@ -109,8 +138,9 @@ augroup spellfiles
   \ expand('%:t') . '.utf-8.add'
 
   " Per file type spellfile (FileType autocmd seems to fire before BufNewFile)
-  autocmd BufNewFile,BufRead *.tex set spell | setlocal spellfile+=$CLOUD_HOME/Syncs/Vim/spell/tex.utf-8.add
+  autocmd BufNewFile,BufRead *.tex set spell | execute "setlocal spellfile+=" . spelldirectory . 'tex.utf-8.add'
 augroup END
+
 
 " Files:
 set encoding=utf-8
@@ -150,6 +180,8 @@ nnoremap <leader>r :%s/\<<C-r><C-w>\>/
 augroup fileOptions
  au!
  au BufNewFile,BufRead *.py call SetPythonOptions()
+ au BufNewFile,BufRead *.bib set tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+ au BufNewFile,BufRead *.tikz set syntax=tex
 augroup END
 
 function SetPythonOptions()
@@ -175,6 +207,7 @@ xmap ga <Plug>(EasyAlign)
 
 " NerdTree:
 nnoremap <C-n> :NERDTreeToggle<CR>
+let g:NERDTreeChDirMode = 2
 
 " VimTex:
 let g:tex_flavor = 'latex'
