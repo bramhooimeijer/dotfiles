@@ -23,9 +23,13 @@ export KEYTIMEOUT=1
 
 # History settings
 HISTFILE=~/.histfile
-HISTSIZE=1000
-SAVEHIST=1000
-setopt hist_ignore_all_dups inc_append_history
+HISTSIZE=10000
+SAVEHIST=10000
+# Build history incrementally, with timestamps and dups
+# but exclude dups from search
+setopt INC_APPEND_HISTORY
+setopt EXTENDED_HISTORY
+setopt HIST_FIND_NO_DUPS
 
 # Completion settings by compinstall
 zstyle ':completion:*' expand prefix
