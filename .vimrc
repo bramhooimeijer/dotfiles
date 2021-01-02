@@ -15,7 +15,7 @@ if has('gui_running')
   set guioptions-=L  "scrollbar on the left (upon window split)
   if has('win32')||has('win64')
     let $HOME="C:/Localdata/"
-	set viminfo+=nC:/Localdata/.vim
+    set viminfo+=nC:/Localdata/.vim
   endif
   set hidden
   set guifont=Noto_Mono_for_Powerline:h10:cANSI:qDRAFT
@@ -32,19 +32,7 @@ endif
 " Syntax: Show syntax and indent properly
 filetype plugin indent on
 syntax on
-
-" Highlighting: Fix colors of search, spell and bad white space
-hi Search ctermbg=Gray
-hi Search ctermfg=Yellow
-hi SpellBad cterm=underline
-hi SpellBad ctermbg=LightGray
-hi SpellBad ctermfg=Red
-hi BadWhitespace ctermbg=red
-augroup highlightspace
-  au!
-  au InsertEnter * match BadWhitespace /\s\+\%#\@<!$/
-  au InsertLeave * match BadWhitespace /\s\+$/
-augroup END
+set modeline
 
 " Visual:
 set number relativenumber
@@ -74,11 +62,8 @@ set textwidth=0
 set backspace=indent,eol,start
 set nojoinspaces
 
-" Textwidth: Highlight column 79
-nnoremap <leader>c :execute "set colorcolumn=" . (&colorcolumn == "" ? "80" : "")<CR>
-
-" Tabs: ensure tabs are shown and inserted as 2 spaces.
-set tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+" Tabs:
+set tabstop=8 softtabstop=2 shiftwidth=2 expandtab
 set smarttab
 set shiftround
 
@@ -149,6 +134,9 @@ set fileformat=unix
 set undolevels=1000
 set undoreload=10000
 
+set list
+set listchars=tab:├─,trail:·
+
 """"""""""""""
 " Functions: "
 """"""""""""""
@@ -179,14 +167,35 @@ nnoremap <leader>r :%s/\<<C-r><C-w>\>/
 augroup fileOptions
  au!
  au BufNewFile,BufRead *.py call SetPythonOptions()
- au BufNewFile,BufRead *.bib set tabstop=2 softtabstop=2 shiftwidth=2 expandtab
- au BufNewFile,BufRead *.tikz set syntax=tex
+ au BufNewFile,BufRead *.bib setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+ au BufNewFile,BufRead *.tikz setlocal syntax=tex
+ au BufNewFile,BufRead *.beancount call SetBeancountOptions()
+ au Syntax c,cpp call SetCOptions()
+ au Syntax sh setlocal sts=0 sw=8 noexpandtab
 augroup END
 
-function SetPythonOptions()
+function! SetBeancountOptions()
+  let @q = 'da"kopgcchxjA ""'
+  inoremap <buffer> . .<C-\><C-O>:AlignCommodity<CR>
+  nnoremap <buffer> <localleader>= :AlignCommodity<CR>
+  vnoremap <buffer> <localleader>= :AlignCommodity<CR>
+  nnoremap <buffer> <localleader># ?<C-r><C-a><CR>
+  nnoremap <buffer> <localleader>* /<C-r><C-a><CR>
+  setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+endfunction
+
+function! SetPythonOptions()
   setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab
-  setlocal textwidth=79
+  setlocal textwidth=99
+  setlocal colorcolumn=99
   setlocal autoindent
+endfunction
+
+function! SetCOptions()
+  setlocal softtabstop=8 shiftwidth=8 noexpandtab
+  setlocal foldmethod=syntax
+  normal zR
+  setlocal colorcolumn=80
 endfunction
 
 """"""""""""""""""""
@@ -211,6 +220,7 @@ let g:NERDTreeChDirMode = 2
 " VimTex:
 let g:tex_flavor = 'latex'
 let g:tex_fast = "cmMprsSvV"
+let g:vimtex_compiler_latexmk = {'build_dir' : 'latexbuild',}
 
 " Mucomplete:
 " add neosnippets to mucomplete chain
@@ -233,6 +243,7 @@ call plug#begin('$HOME/.vim/plugged')
 " Completion:
 Plug 'lifepillar/vim-mucomplete'
 Plug 'wellle/tmux-complete.vim'
+
 " Snippets:
 Plug 'roxma/nvim-yarp'
 Plug 'roxma/vim-hug-neovim-rpc'
@@ -240,17 +251,23 @@ Plug 'shougo/neosnippet.vim'
 Plug 'shougo/neosnippet-snippets'
 Plug 'honza/vim-snippets'
 
-Plug 'itchyny/lightline.vim'            " Theme
-Plug 'ayu-theme/ayu-vim'                " Colorscheme
-Plug 'christoomey/vim-tmux-navigator/'  " Allows pane change using TMUX
-Plug 'junegunn/vim-easy-align'          " Improves = align using ga=
-Plug 'tpope/vim-commentary'             " Toggle comment using gc
-Plug 'scrooloose/nerdtree'              " Opens filetree using C-n in normal mode
-Plug 'vhda/verilog_systemverilog.vim'   " Extensions for coding in .sv
-Plug 'lervag/vimtex'                    " Extensions for markup in .tex
-Plug 'nathangrigg/vim-beancount'        " Arranges completion for use with beancount accounting software
-Plug 'tmhedberg/SimpylFold', { 'for': 'python' }
-Plug 'https://github.com/davidhalter/jedi-vim', { 'for': 'python' }
+" Appearance:
+Plug 'itchyny/lightline.vim'                                              " Theme
+Plug 'ayu-theme/ayu-vim'                                                  " Colorscheme
+
+Plug 'christoomey/vim-tmux-navigator/'                                    " Allows pane change using TMUX
+Plug 'junegunn/vim-easy-align'                                            " Improves = align using ga
+Plug 'tpope/vim-commentary'                                               " Toggle comment using gc
+Plug 'tpope/vim-surround'                                                 " Change/add surrounding ("[ etc
+Plug 'scrooloose/nerdtree'                                                " Opens filetree using C-n in normal mode
+Plug 'ludovicchabant/vim-gutentags'
+
+" File Specifics
+Plug 'vhda/verilog_systemverilog.vim', { 'for': 'verilog_systemverilog' } " Extensions for coding in .sv
+Plug 'lervag/vimtex', { 'for': 'tex' }                                    " Extensions for markup in .tex
+Plug 'nathangrigg/vim-beancount', { 'for': 'beancount' }                  " Arranges completion for use with beancount accounting software
+Plug 'tmhedberg/SimpylFold', { 'for': 'python' }                          " Fixes indentation in Python files
+Plug 'davidhalter/jedi-vim', { 'for': 'python' }       " LSP for Python files
 call plug#end()
 
 " Colorscheme:
