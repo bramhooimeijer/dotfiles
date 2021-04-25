@@ -166,12 +166,14 @@ nnoremap <leader>r :%s/\<<C-r><C-w>\>/
 
 augroup fileOptions
  au!
- au BufNewFile,BufRead *.py call SetPythonOptions()
  au BufNewFile,BufRead *.tikz setlocal syntax=tex
  au BufNewFile,BufRead *.beancount call SetBeancountOptions()
  au Syntax c,cpp call SetCOptions()
+ au Syntax python call SetPythonOptions()
  au Syntax sh setlocal sts=0 sw=8 noexpandtab
  au Syntax vim setlocal commentstring=\"\ %s
+ au Syntax rust setlocal omnifunc=ale#completion#OmniFunc
+ au Syntax rust inoremap <buffer> ;; =>
 augroup END
 
 function! SetBeancountOptions()
@@ -222,7 +224,7 @@ let g:NERDTreeChDirMode = 2
 " keyn = local buffer. Dict = dictionary. Uspl = wrongly spelled
 let g:mucomplete#chains = {
       \ 'vim'     : ['path', 'cmd', 'keyn'],
-      \ 'default' : ['path', 'omni', 'nsnp', 'keyn',  'dict', 'uspl']
+      \ 'default' : ['path', 'omni', 'nsnp', 'keyn', 'user', 'dict', 'uspl']
       \}
 let g:jedi#auto_vim_configuration = 0
 let g:jedi#popup_on_dot = 0
@@ -237,9 +239,11 @@ let g:neosnippet#snippets_directory='$HOME/.vim/plugged/vim-snippets/snippets,$C
 " ALE:
 let g:ale_linters = {
       \   'python': ['flake8','pylint'],
+      \   'rust': ['cargo', 'analyzer'],
       \}
 let g:ale_fixers = {
       \   'python': ['yapf'],
+      \   'rust': ['rustfmt'],
       \   '*': ['remove_trailing_lines', 'trim_whitespace'],
       \}
 let g:ale_linters_explicit = 1
