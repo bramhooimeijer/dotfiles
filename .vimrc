@@ -167,9 +167,9 @@ nnoremap <leader>r :%s/\<<C-r><C-w>\>/
 augroup fileOptions
  au!
  au BufNewFile,BufRead *.tikz setlocal syntax=tex
- au BufNewFile,BufRead *.beancount call SetBeancountOptions()
  au Syntax c,cpp call SetCOptions()
  au Syntax python call SetPythonOptions()
+ au Syntax beancount call SetBeancountOptions()
  au Syntax rust call SetRustOptions()
  au Syntax sh setlocal sts=0 sw=8 noexpandtab
  au Syntax vim setlocal commentstring=\"\ %s
