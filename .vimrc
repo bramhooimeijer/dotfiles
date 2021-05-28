@@ -170,10 +170,9 @@ augroup fileOptions
  au BufNewFile,BufRead *.beancount call SetBeancountOptions()
  au Syntax c,cpp call SetCOptions()
  au Syntax python call SetPythonOptions()
+ au Syntax rust call SetRustOptions()
  au Syntax sh setlocal sts=0 sw=8 noexpandtab
  au Syntax vim setlocal commentstring=\"\ %s
- au Syntax rust setlocal omnifunc=ale#completion#OmniFunc
- au Syntax rust inoremap <buffer> ;; =>
 augroup END
 
 function! SetBeancountOptions()
@@ -197,6 +196,11 @@ function! SetCOptions()
   setlocal foldmethod=syntax
   normal zR
   setlocal colorcolumn=80
+endfunction
+
+function! SetRustOptions()
+ setlocal omnifunc=ale#completion#OmniFunc
+ inoremap <buffer> ;; =>
 endfunction
 
 """"""""""""""""""""
