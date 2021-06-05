@@ -45,7 +45,7 @@ export TERM=xterm-256color
 # Start tmux if available and if interactive. Attach to current session, such that detaching stays possible.
 if command -v tmux &> /dev/null && [ -n "$PS1" ]  && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
 	# Attach to current session, detaching still possible
-	#tmux attach || exec tmux new-session
+	tmux attach || exec tmux -2
 	# create new session
 	exec tmux -2
 fi
