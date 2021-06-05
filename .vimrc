@@ -200,6 +200,7 @@ endfunction
 
 function! SetRustOptions()
  setlocal omnifunc=ale#completion#OmniFunc
+ let l:ale_completion_enabled = 1
  inoremap <buffer> ;; =>
 endfunction
 
@@ -244,6 +245,9 @@ let g:neosnippet#snippets_directory='$HOME/.vim/plugged/vim-snippets/snippets,$C
 let g:ale_linters = {
       \   'python': ['flake8','pylint'],
       \   'rust': ['cargo', 'analyzer'],
+      \   'verilog': ['xvlog', 'iverilog'],
+      \   'verilog_systemverilog': ['xvlog', 'iverilog'],
+      \   'systemverilog': ['xvlog', 'iverilog'],
       \}
 let g:ale_fixers = {
       \   'python': ['yapf'],
