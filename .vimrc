@@ -236,9 +236,9 @@ let g:neosnippet#snippets_directory='$HOME/.vim/plugged/vim-snippets/snippets,$C
 let g:ale_linters = {
       \   'python': ['flake8','pylint'],
       \   'rust': ['cargo', 'analyzer'],
-      \   'verilog': ['xvlog', 'iverilog'],
-      \   'verilog_systemverilog': ['xvlog', 'iverilog'],
-      \   'systemverilog': ['xvlog', 'iverilog'],
+      \   'verilog': ['svls', 'xvlog', 'iverilog'],
+      \   'verilog_systemverilog': ['svls', 'xvlog', 'iverilog'],
+      \   'systemverilog': ['svls','xvlog', 'iverilog'],
       \}
 let g:ale_fixers = {
       \   'python': ['yapf'],
@@ -294,6 +294,19 @@ Plug 'davidhalter/jedi-vim', { 'for': 'python' }                          " LSP 
 Plug 'Vimjas/vim-python-pep8-indent', { 'for': 'python' }                 " Correctly indents next line
 
 call plug#end()
+
+function! GetSvlsProjRoot(buffer) abort
+    let l:svls_file = ale#path#FindNearestFile(a:buffer, '.svls.toml')
+    return !empty(l:svls_file) ? fnamemodify(l:svls_file, ':h') : ''
+endfunction
+
+call ale#linter#Define('verilog', {
+\   'name': 'svls',
+\   'lsp': 'stdio',
+\   'executable': 'svls',
+\   'command': '%e',
+\   'project_root': function('GetSvlsProjRoot'),
+\})
 
 " Colorscheme:
 set termguicolors
