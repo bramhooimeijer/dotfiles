@@ -5,24 +5,25 @@ if !has('gui_running')
   set t_Co=256
 endif
 
-" gVIM specific
-if has('gui_running')
-  set langmenu=en_US.UTF-8    " sets the language of the menu (gvim)
+if has('win32')||has('win64')
   language en                 " sets the language of the messages / ui (vim)
-  set guioptions-=m  "menu bar
-  set guioptions-=T  "toolbar
-  set guioptions-=r  "scrollbar on the right
-  set guioptions-=L  "scrollbar on the left (upon window split)
-  if has('win32')||has('win64')
-    let $HOME="C:/Localdata/"
-    set viminfo+=nC:/Localdata/.vim
-  endif
-  set hidden
-  set guifont=Noto_Mono_for_Powerline:h10:cANSI:qDRAFT
+  let $HOME="C:/Localdata/"
+  set viminfo+=nC:/Localdata/.vim
 endif
 
 if !exists('$CLOUD_HOME')
   let $CLOUD_HOME=$HOME
+endif
+
+" gVIM specific
+if has('gui_running')
+  set langmenu=en_US.UTF-8    " sets the language of the menu (gvim)
+  set guioptions-=m  "menu bar
+  set guioptions-=T  "toolbar
+  set guioptions-=r  "scrollbar on the right
+  set guioptions-=L  "scrollbar on the left (upon window split)
+  set hidden
+  set guifont=Noto_Mono_for_Powerline:h10:cANSI:qDRAFT
 endif
 
 """"""""""""
@@ -55,10 +56,7 @@ set shortmess+=c   " Shut off completion messages
 set belloff+=ctrlg " If Vim beeps during completion
 
 " Format: Soft wrapping, proper backspace behavior
-set wrap
 set linebreak
-set wrapmargin=0
-set textwidth=0
 set backspace=indent,eol,start
 set nojoinspaces
 
@@ -131,8 +129,6 @@ set encoding=utf-8
 set autoread
 set writebackup
 set fileformat=unix
-set undolevels=1000
-set undoreload=10000
 
 set list
 set listchars=tab:├─,trail:·
@@ -199,29 +195,19 @@ function! SetCOptions()
 endfunction
 
 function! SetRustOptions()
- setlocal omnifunc=ale#completion#OmniFunc
- let l:ale_completion_enabled = 1
- inoremap <buffer> ;; =>
+  setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab
+  setlocal omnifunc=ale#completion#OmniFunc
+  let l:ale_completion_enabled = 1
+  inoremap <buffer> ;; =>
 endfunction
 
 """"""""""""""""""""
 " Plugin_settings: "
 """"""""""""""""""""
 
-" Vim_Tmux_Navigator:
-nnoremap <silent> <C-a>h :TmuxNavigateLeft<cr>
-nnoremap <silent> <C-a>j :TmuxNavigateDown<cr>
-nnoremap <silent> <C-a>k :TmuxNavigateUp<cr>
-nnoremap <silent> <C-a>l :TmuxNavigateRight<cr>
-"nnoremap <silent> <C-a>\ :TmuxNavigatePrevious<cr>
-
 " Vim_easy_align:
 nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
-
-" NerdTree:
-nnoremap <C-n> :NERDTreeToggle<CR>
-let g:NERDTreeChDirMode = 2
 
 " Mucomplete:
 " add neosnippets to mucomplete chain
@@ -231,6 +217,11 @@ let g:mucomplete#chains = {
       \ 'vim'     : ['path', 'cmd', 'keyn'],
       \ 'default' : ['path', 'omni', 'nsnp', 'keyn', 'user', 'dict', 'uspl']
       \}
+let g:mucomplete#can_complete ={
+  \ 'rust': {
+    \ 'omni' : {t -> strlen(&l:omnifunc) > 0 && t =~# '\%(\k\|\.\|::\)$' }
+  \}
+\}
 let g:jedi#auto_vim_configuration = 0
 let g:jedi#popup_on_dot = 0
 
@@ -285,19 +276,18 @@ Plug 'honza/vim-snippets'
 Plug 'itchyny/lightline.vim'                                              " Theme
 Plug 'ayu-theme/ayu-vim'                                                  " Colorscheme
 
-Plug 'christoomey/vim-tmux-navigator/'                                    " Allows pane change using TMUX
 Plug 'junegunn/vim-easy-align'                                            " Improves = align using ga
 Plug 'tpope/vim-commentary'                                               " Toggle comment using gc
 Plug 'tpope/vim-surround'                                                 " Change/add surrounding ("[ etc
-Plug 'scrooloose/nerdtree'                                                " Opens filetree using C-n in normal mode
 Plug 'ludovicchabant/vim-gutentags'
 
 " File Specifics:
 Plug 'tpope/vim-apathy'                                                   " Set up $PATH correctly for C/C++/ObjectiveC/GO/JS/Lua/Python/Shell a.o.
 Plug 'dense-analysis/ale'
-Plug 'vhda/verilog_systemverilog.vim', { 'for': 'verilog_systemverilog' } " Extensions for coding in .sv
+" Plug 'vhda/verilog_systemverilog.vim', { 'for': 'verilog_systemverilog' } " Extensions for coding in .sv
 Plug 'lervag/vimtex', { 'for': 'tex' }                                    " Extensions for markup in .tex
 Plug 'nathangrigg/vim-beancount', { 'for': 'beancount' }                  " Arranges completion for use with beancount accounting software
+Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 " Python:
 Plug 'tmhedberg/SimpylFold', { 'for': 'python' }                          " Fixes indentation in Python files
 Plug 'davidhalter/jedi-vim', { 'for': 'python' }                          " LSP for Python files
