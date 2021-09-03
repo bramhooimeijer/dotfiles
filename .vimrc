@@ -241,8 +241,8 @@ let g:ale_linters = {
       \   'systemverilog': ['svls','xvlog', 'iverilog'],
       \}
 let g:ale_fixers = {
-      \   'python': ['yapf'],
-      \   'rust': ['rustfmt'],
+      \   'python': ['yapf', 'remove_trailing_lines', 'trim_whitespace'],
+      \   'rust': ['rustfmt', 'remove_trailing_lines', 'trim_whitespace'],
       \   '*': ['remove_trailing_lines', 'trim_whitespace'],
       \}
 let g:ale_linters_explicit = 1
