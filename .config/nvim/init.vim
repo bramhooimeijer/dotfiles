@@ -15,12 +15,19 @@ if has('nvim')
     Plug 'hoob3rt/lualine.nvim'
     Plug 'kyazdani42/nvim-web-devicons'
 
-    " IDE:
+    " Lsp:
     Plug 'neovim/nvim-lspconfig'
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " Update parsers on update
-    "Plug 'hrsh7th/nvim-cmp'
-    "Plug 'hrsh7th/cmp-buffer'
     Plug 'ray-x/lsp_signature.nvim'
+    " Completion:
+    Plug 'nvim-lua/completion-nvim'
+
+    " Snippets:
+    Plug 'Shougo/neosnippet.vim'
+    Plug 'Shougo/neosnippet-snippets'
+    Plug 'honza/vim-snippets'
+    
+    " Navigation:
     Plug 'ludovicchabant/vim-gutentags'
 
     " Editing:
@@ -158,3 +165,17 @@ let g:vimtex_compiler_latexmk = {'build_dir' : 'latexbuild',}
 
 " Beancount:
 let g:beancount_separator_col = 61
+
+" Completion-nvim:
+" Use completion-nvim in every buffer
+autocmd BufEnter * lua require'completion'.on_attach()
+let g:completion_enable_auto_popup = 0
+imap <tab> <Plug>(completion_smart_tab)
+imap <s-tab> <Plug>(completion_smart_s_tab)
+let g:completion_enable_snippet = 'Neosnippet'
+" Neosnippet:
+imap <C-u>     <Plug>(neosnippet_expand_or_jump)
+smap <C-u>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-u>     <Plug>(neosnippet_expand_target)
+let g:neosnippet#enable_snipmate_compatibility = 1
+exec 'let g:neosnippet#snippets_directory='''.stdpath('data').'/plugged/vim-snippets/snippets,$CLOUD_HOME/Syncs/Vim/snippets'''
