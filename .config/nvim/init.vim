@@ -81,6 +81,7 @@ set splitbelow
 set splitright
 
 set clipboard=unnamed
+set undofile
 
 " Spelling:
 let spelldirectory=$CLOUD_HOME . '/Syncs/Vim/spell//'
