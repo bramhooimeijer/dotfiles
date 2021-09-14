@@ -164,6 +164,7 @@ nnoremap <leader>r :%s/\<<C-r><C-w>\>/
 augroup fileOptions
  au!
  au BufNewFile,BufRead *.tikz setlocal syntax=tex
+ au BufNewFile,BufRead *.h let c_syntax_for_h = 1
  au Syntax c,cpp call SetCOptions()
  au Syntax python call SetPythonOptions()
  au Syntax beancount call SetBeancountOptions()
@@ -186,6 +187,7 @@ function! SetPythonOptions()
   setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab
   setlocal colorcolumn=80
   setlocal autoindent
+  normal zR
 endfunction
 
 function! SetCOptions()
@@ -193,6 +195,7 @@ function! SetCOptions()
   setlocal foldmethod=syntax
   normal zR
   setlocal colorcolumn=80
+  inoremap <buffer> ;; ->
 endfunction
 
 function! SetRustOptions()
@@ -209,6 +212,11 @@ endfunction
 " Vim_easy_align:
 nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
+
+" VimTex:
+let g:tex_flavor = 'latex'
+let g:tex_fast = "cmMprsSvV"
+let g:vimtex_compiler_latexmk = {'build_dir' : 'latexbuild',}
 
 " Mucomplete:
 " add neosnippets to mucomplete chain
@@ -240,13 +248,22 @@ let g:ale_linters = {
       \   'verilog': ['svls', 'xvlog', 'iverilog'],
       \   'verilog_systemverilog': ['svls', 'xvlog', 'iverilog'],
       \   'systemverilog': ['svls','xvlog', 'iverilog'],
+      \   'c':      ['gcc'],
+      \   'cpp':    ['g++'],
+      \   'c++':    ['g++'],
       \}
 let g:ale_fixers = {
       \   'python': ['yapf', 'remove_trailing_lines', 'trim_whitespace'],
       \   'rust': ['rustfmt', 'remove_trailing_lines', 'trim_whitespace'],
+      \   'c' : ['clang-format'],
       \   '*': ['remove_trailing_lines', 'trim_whitespace'],
       \}
 let g:ale_linters_explicit = 1
+let g:ale_c_parse_makefile = 1
+let g:ale_c_parse_compile_commands = 0
+let g:ale_c_cc_executable = 'gcc'
+" Linux style C-formatting
+let g:ale_c_clangformat_options = '--style="{IndentWidth: 8, UseTab: Always, BreakBeforeBraces: Linux, AllowShortIfStatementsOnASingleLine: false, AllowShortFunctionsOnASingleLine: false, IndentCaseLabels: false, SortIncludes: false, AlignConsecutiveMacros: true}"'
 nnoremap <F5> :ALEFix<CR>
 
 " VimTex:
