@@ -69,6 +69,13 @@ set noshowmode
 set noshowcmd
 set visualbell
 
+" Completion:
+set completeopt=menuone,noinsert,noselect
+set shortmess+=c
+set completeopt+=menuone,noselect,noinsert
+set shortmess+=c   " Shut off completion messages
+set belloff+=ctrlg " If Vim beeps during completion
+
 " Format: Soft wrapping, proper backspace behavior
 set linebreak
 set nojoinspaces
@@ -150,6 +157,43 @@ inoremap ? ?<c-g>u
 nnoremap <expr> k (v:count > 5 ? "m'" . v:count : "") . 'k'
 nnoremap <expr> j (v:count > 5 ? "m'" . v:count : "") . 'j'
 
+"""""""""""""""""""
+" File Specifics: "
+"""""""""""""""""""
+
+augroup fileOptions
+ au!
+ au BufNewFile,BufRead *.tikz setlocal syntax=tex
+ au BufNewFile,BufRead *.h let c_syntax_for_h = 1
+ au Syntax c,cpp call SetCOptions()
+ au Syntax python call SetPythonOptions()
+ au Syntax rust call SetRustOptions()
+ au Syntax sh setlocal sts=0 sw=8 noexpandtab
+ au Syntax vim setlocal commentstring=\"\ %s
+augroup END
+
+function! SetPythonOptions()
+  setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab
+  setlocal colorcolumn=80
+  setlocal autoindent
+  normal zR
+endfunction
+
+function! SetCOptions()
+  setlocal softtabstop=8 shiftwidth=8 noexpandtab
+  setlocal foldmethod=syntax
+  normal zR
+  setlocal colorcolumn=80
+  inoremap <buffer> ;; ->
+  " if (stridx(getcwd(), "jailhouse") >= 0)||((stridx(getcwd(), "poc-carmv2-software") >= 0) && (stridx(getcwd(), "linux") < 0))
+    " let b:ale_c_cc_options = '-Wp,-MD -nostdinc -isystem /usr/lib/gcc/x86_64-linux-gnu/7/include -Werror -include /data/rtc/brahoo/poc-carmv2-software/siemens_jailhouse/include/jailhouse/config.h -march=native -D__cascade_skylake__ -I/data/rtc/brahoo/poc-carmv2-software/siemens_jailhouse/include/arch/x86 -I/data/rtc/brahoo/poc-carmv2-software/siemens_jailhouse/include -g -O3 -Wall -Wstrict-prototypes -Wtype-limits -Wmissing-declarations -Wmissing-prototypes -fno-strict-aliasing -fomit-frame-pointer -fno-pic -fno-common -fno-stack-protector -ffreestanding -ffunction-sections -D__LINUX_COMPILER_TYPES_H -m64 -mno-red-zone -mrdrnd -I./include -I/data/rtc/brahoo/poc-carmv2-software/pdjailhouse/inmates/lib/ -I/data/rtc/brahoo/poc-carmv2-software/pdjailhouse/inmates/rtc-bsp-xeonsp/ -I/data/rtc/brahoo/poc-carmv2-software/pdjailhouse/inmates/test/'
+endfunction
+
+function! SetRustOptions()
+  setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab
+  inoremap <buffer> ;; =>
+endfunction
+
 """"""""""""""""""""
 " Plugin_settings: "
 """"""""""""""""""""
@@ -172,7 +216,18 @@ autocmd BufEnter * lua require'completion'.on_attach()
 let g:completion_enable_auto_popup = 0
 imap <tab> <Plug>(completion_smart_tab)
 imap <s-tab> <Plug>(completion_smart_s_tab)
+let g:completion_auto_change_source = 1
+let g:completion_chain_complete_list = [
+  \{'complete_items': ['lsp']},
+  \{'mode': 'omni'},
+  \{'complete_items': ['snippet']},
+  \{'mode': 'file'},
+  \{'mode': 'tags'},
+  \{'mode': '<c-p>'},
+  \{'mode': '<c-n>'},
+\]
 let g:completion_enable_snippet = 'Neosnippet'
+
 " Neosnippet:
 imap <C-u>     <Plug>(neosnippet_expand_or_jump)
 smap <C-u>     <Plug>(neosnippet_expand_or_jump)

@@ -2,15 +2,18 @@
 require "lsp_signature".setup()
 
 -- initialize language servers
+require'lspconfig'.clangd.setup{
+  filetypes = { "c", "cpp", "objc", "objcpp", "h"}
+}
 require'lspconfig'.pyright.setup{} -- python
 require'lspconfig'.svls.setup{ -- (system) verilog
-    root_dir = function(fname)
-        local root_files = {
-            '.svls.toml',
-            '.svlint.toml',
-        }
-        return util.root_pattern(unpack(root_files))(fname) or util.find_git_ancestor(fname) or util.path.dirname(fname)
-    end,
+  root_dir = function(fname)
+    local root_files = {
+      '.svls.toml',
+      '.svlint.toml',
+    }
+    return util.root_pattern(unpack(root_files))(fname) or util.find_git_ancestor(fname) or util.path.dirname(fname)
+  end,
 }
 require'lspconfig'.bashls.setup{} -- bash
 require'lspconfig'.rust_analyzer.setup{}
@@ -54,7 +57,7 @@ end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { 'pyright', 'svls', 'bashls', 'rust_analyzer'}
+local servers = { 'clangd', 'pyright', 'svls', 'bashls', 'rust_analyzer'}
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,
