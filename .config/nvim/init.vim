@@ -26,7 +26,7 @@ if has('nvim')
     Plug 'Shougo/neosnippet.vim'
     Plug 'Shougo/neosnippet-snippets'
     Plug 'honza/vim-snippets'
-    
+
     " Navigation:
     Plug 'ludovicchabant/vim-gutentags'
 
@@ -46,6 +46,7 @@ endif
 set termguicolors
 let ayucolor="dark"
 colorscheme ayu
+set list
 
 exec 'luafile '.stdpath('config').'/lua/lsp.lua'
 exec 'luafile '.stdpath('config').'/lua/misc.lua'
@@ -70,9 +71,10 @@ set noshowcmd
 set visualbell
 
 " Completion:
-set completeopt=menuone,noinsert,noselect
-set shortmess+=c
+set wildmode=longest:full,full
+set wildmenu
 set completeopt+=menuone,noselect,noinsert
+set completeopt-=preview
 set shortmess+=c   " Shut off completion messages
 set belloff+=ctrlg " If Vim beeps during completion
 
@@ -137,11 +139,13 @@ endfunction
 nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:noh<CR>
 let maplocalleader = "-"
 let mapleader = "\<Space>"
+" A rename function
+nnoremap <leader>r :%s/\<<C-r><C-w>\>/
 " move lines
 nnoremap <leader>j :m .+1<CR>==
 nnoremap <leader>k :m .-2<CR>==
-" gi is used by lsp, so access that differently
-nnoremap <leader>i gi
+" Access tags from non-regular keyboards
+nnoremap <leader>t g<C-]>
 " Make keybinds behave like most other vim keybinds
 nnoremap Y y$
 " Keeping the cursor centered when jumping around
@@ -216,6 +220,8 @@ autocmd BufEnter * lua require'completion'.on_attach()
 let g:completion_enable_auto_popup = 0
 imap <tab> <Plug>(completion_smart_tab)
 imap <s-tab> <Plug>(completion_smart_s_tab)
+imap <expr> <Left>  pumvisible() ? "\<Plug>(completion_prev_source)" : "\<Left>"
+imap <expr> <Right>  pumvisible() ? "\<Plug>(completion_next_source)" : "\<Right>"
 let g:completion_auto_change_source = 1
 let g:completion_chain_complete_list = [
   \{'complete_items': ['lsp']},
