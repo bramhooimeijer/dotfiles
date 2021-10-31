@@ -20,7 +20,13 @@ if has('nvim')
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " Update parsers on update
     Plug 'ray-x/lsp_signature.nvim'
     " Completion:
-    Plug 'nvim-lua/completion-nvim'
+    Plug 'hrsh7th/cmp-nvim-lsp'     " cmp source for lsps
+    Plug 'hrsh7th/cmp-buffer'       " cmp source for buffers
+    Plug 'hrsh7th/cmp-path'         " cmp source for filepaths
+    Plug 'hrsh7th/cmp-cmdline'         " cmp source for filepaths
+    " Plug 'hrsh7th/cmp-omni'         " cmp source for omnipath
+    Plug 'notomo/cmp-neosnippet'    " cmp source for neosnippet
+    Plug 'hrsh7th/nvim-cmp'         " cmp itself
 
     " Snippets:
     Plug 'Shougo/neosnippet.vim'
@@ -48,6 +54,7 @@ let ayucolor="dark"
 colorscheme ayu
 set list
 
+exec 'luafile '.stdpath('config').'/lua/nvim-cmp.lua'
 exec 'luafile '.stdpath('config').'/lua/lsp.lua'
 exec 'luafile '.stdpath('config').'/lua/misc.lua'
 
@@ -73,8 +80,7 @@ set visualbell
 " Completion:
 set wildmode=longest:full,full
 set wildmenu
-set completeopt+=menuone,noselect,noinsert
-set completeopt-=preview
+set completeopt=menu,menuone,noselect
 set shortmess+=c   " Shut off completion messages
 set belloff+=ctrlg " If Vim beeps during completion
 
@@ -189,13 +195,12 @@ function! SetCOptions()
   normal zR
   setlocal colorcolumn=80
   inoremap <buffer> ;; ->
-  " if (stridx(getcwd(), "jailhouse") >= 0)||((stridx(getcwd(), "poc-carmv2-software") >= 0) && (stridx(getcwd(), "linux") < 0))
-    " let b:ale_c_cc_options = '-Wp,-MD -nostdinc -isystem /usr/lib/gcc/x86_64-linux-gnu/7/include -Werror -include /data/rtc/brahoo/poc-carmv2-software/siemens_jailhouse/include/jailhouse/config.h -march=native -D__cascade_skylake__ -I/data/rtc/brahoo/poc-carmv2-software/siemens_jailhouse/include/arch/x86 -I/data/rtc/brahoo/poc-carmv2-software/siemens_jailhouse/include -g -O3 -Wall -Wstrict-prototypes -Wtype-limits -Wmissing-declarations -Wmissing-prototypes -fno-strict-aliasing -fomit-frame-pointer -fno-pic -fno-common -fno-stack-protector -ffreestanding -ffunction-sections -D__LINUX_COMPILER_TYPES_H -m64 -mno-red-zone -mrdrnd -I./include -I/data/rtc/brahoo/poc-carmv2-software/pdjailhouse/inmates/lib/ -I/data/rtc/brahoo/poc-carmv2-software/pdjailhouse/inmates/rtc-bsp-xeonsp/ -I/data/rtc/brahoo/poc-carmv2-software/pdjailhouse/inmates/test/'
 endfunction
 
 function! SetRustOptions()
   setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab
-  inoremap <buffer> ;; =>
+  inoremap <buffer> ,, =>
+  inoremap <buffer> ;; ->
 endfunction
 
 """"""""""""""""""""
@@ -213,26 +218,6 @@ let g:vimtex_compiler_latexmk = {'build_dir' : 'latexbuild',}
 
 " Beancount:
 let g:beancount_separator_col = 61
-
-" Completion-nvim:
-" Use completion-nvim in every buffer
-autocmd BufEnter * lua require'completion'.on_attach()
-let g:completion_enable_auto_popup = 0
-imap <tab> <Plug>(completion_smart_tab)
-imap <s-tab> <Plug>(completion_smart_s_tab)
-imap <expr> <Left>  pumvisible() ? "\<Plug>(completion_prev_source)" : "\<Left>"
-imap <expr> <Right>  pumvisible() ? "\<Plug>(completion_next_source)" : "\<Right>"
-let g:completion_auto_change_source = 1
-let g:completion_chain_complete_list = [
-  \{'complete_items': ['lsp']},
-  \{'mode': 'omni'},
-  \{'complete_items': ['snippet']},
-  \{'mode': 'file'},
-  \{'mode': 'tags'},
-  \{'mode': '<c-p>'},
-  \{'mode': '<c-n>'},
-\]
-let g:completion_enable_snippet = 'Neosnippet'
 
 " Neosnippet:
 imap <C-u>     <Plug>(neosnippet_expand_or_jump)
