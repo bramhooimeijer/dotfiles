@@ -11,7 +11,7 @@ endif
 if has('nvim')
   call plug#begin(stdpath('data') . '/plugged')
     " Appearance:
-    Plug 'ayu-theme/ayu-vim'
+    Plug 'Luxed/ayu-vim'
     Plug 'hoob3rt/lualine.nvim'
     Plug 'kyazdani42/nvim-web-devicons'
 
@@ -23,7 +23,7 @@ if has('nvim')
     Plug 'hrsh7th/cmp-nvim-lsp'     " cmp source for lsps
     Plug 'hrsh7th/cmp-buffer'       " cmp source for buffers
     Plug 'hrsh7th/cmp-path'         " cmp source for filepaths
-    Plug 'hrsh7th/cmp-cmdline'         " cmp source for filepaths
+    Plug 'hrsh7th/cmp-cmdline'      " cmp source for filepaths
     " Plug 'hrsh7th/cmp-omni'         " cmp source for omnipath
     Plug 'notomo/cmp-neosnippet'    " cmp source for neosnippet
     Plug 'hrsh7th/nvim-cmp'         " cmp itself
