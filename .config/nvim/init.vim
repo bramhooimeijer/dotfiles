@@ -180,6 +180,7 @@ augroup fileOptions
  au Syntax rust call SetRustOptions()
  au Syntax sh setlocal sts=0 sw=8 noexpandtab
  au Syntax vim setlocal commentstring=\"\ %s
+ au Syntax vhdl call SetVHDLOptions()
 augroup END
 
 function! SetPythonOptions()
@@ -201,6 +202,15 @@ function! SetRustOptions()
   setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab
   inoremap <buffer> ,, =>
   inoremap <buffer> ;; ->
+endfunction
+
+function! SetVHDLOptions()
+  setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab
+  setlocal colorcolumn=120
+  inoremap <buffer> ,, <=
+  inoremap <buffer> .. =>
+  inoremap <buffer> ;; ->
+  setlocal commentstring=--\ %s
 endfunction
 
 """"""""""""""""""""
