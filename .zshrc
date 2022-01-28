@@ -3,6 +3,8 @@
 bindkey -v
 setopt vi
 bindkey "^?" backward-delete-char #Fixes backspace
+export EDITOR=nvim
+export VISUAL=nvim
 
 # Set prompt to GRML. This allows us to customize $RSP manually instead of using :prompt:grml:right:setp
 autoload -Uz promptinit
@@ -23,8 +25,8 @@ export KEYTIMEOUT=1
 
 # History settings
 HISTFILE=~/.histfile
-HISTSIZE=10000
-SAVEHIST=10000
+HISTSIZE=100000
+SAVEHIST=100000
 # Build history incrementally, with timestamps and dups
 # but exclude dups from search
 setopt INC_APPEND_HISTORY
@@ -37,15 +39,20 @@ zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]}' 'm:{[:lower:]
 autoload -Uz compinit
 compinit
 
+autoload -U bashcompinit
+bashcompinit
+
 # Source aliases and directory hashes
 [[ -f $HOME/.zshrc.alias.local ]] && source $HOME/.zshrc.alias.local
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 export TERM=xterm-256color
 
+alias vim='nvim'
+
 # Start tmux if available and if interactive. Attach to current session, such that detaching stays possible.
 if command -v tmux &> /dev/null && [ -n "$PS1" ]  && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
 	# Attach to current session, detaching still possible
-	tmux attach || exec tmux -2
+	#tmux attach || exec tmux new-session
 	# create new session
 	exec tmux -2
 fi
