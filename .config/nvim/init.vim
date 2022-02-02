@@ -147,7 +147,7 @@ nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:noh<CR>
 let maplocalleader = "-"
 let mapleader = "\<Space>"
 " A rename function
-nnoremap <leader>r :%s/\<<C-r><C-w>\>/
+nnoremap <leader>r :%s/\<<C-r><C-w>\>/<C-r><C-w>
 " move lines
 nnoremap <leader>j :m .+1<CR>==
 nnoremap <leader>k :m .-2<CR>==
