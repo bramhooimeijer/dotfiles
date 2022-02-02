@@ -40,6 +40,7 @@ if has('nvim')
     Plug 'junegunn/vim-easy-align'                                            " Improves = align using ga
     Plug 'tpope/vim-commentary'                                               " Toggle comment using gc
     Plug 'tpope/vim-surround'                                                 " Change/add surrounding ("[ etc
+    Plug 'tpope/vim-fugitive'                                                 " Edit git from vim
 
     " File_specific:
     Plug 'lervag/vimtex', { 'for': 'tex' }                                    " Extensions for markup in .tex
