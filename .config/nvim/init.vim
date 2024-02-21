@@ -23,14 +23,14 @@ if has('nvim')
     Plug 'hrsh7th/cmp-nvim-lsp'     " cmp source for lsps
     Plug 'hrsh7th/cmp-buffer'       " cmp source for buffers
     Plug 'hrsh7th/cmp-path'         " cmp source for filepaths
-    Plug 'hrsh7th/cmp-cmdline'      " cmp source for filepaths
-    " Plug 'hrsh7th/cmp-omni'         " cmp source for omnipath
-    Plug 'notomo/cmp-neosnippet'    " cmp source for neosnippet
+    Plug 'hrsh7th/cmp-cmdline'      " cmp source for cmdline
+    Plug 'hrsh7th/cmp-omni'         " cmp source for omnipath
+    Plug 'hrsh7th/cmp-vsnip'        " cmp source for vsnip
     Plug 'hrsh7th/nvim-cmp'         " cmp itself
 
     " Snippets:
-    Plug 'Shougo/neosnippet.vim'
-    Plug 'Shougo/neosnippet-snippets'
+    Plug 'hrsh7th/vim-vsnip'
+    Plug 'rafamadriz/friendly-snippets'
     Plug 'honza/vim-snippets'
 
     " Navigation:
@@ -81,7 +81,7 @@ set visualbell
 " Completion:
 set wildmode=longest:full,full
 set wildmenu
-set completeopt=menu,menuone,noselect
+set completeopt=menu,menuone,noselect,preview
 set shortmess+=c   " Shut off completion messages
 set belloff+=ctrlg " If Vim beeps during completion
 
@@ -181,7 +181,7 @@ augroup fileOptions
  au Syntax rust call SetRustOptions()
  au Syntax sh setlocal sts=0 sw=8 noexpandtab
  au Syntax vim setlocal commentstring=\"\ %s
- au Syntax vhdl call SetVHDLOptions()
+ au Syntax beancount call SetBeancountOptions()
 augroup END
 
 function! SetPythonOptions()
@@ -205,13 +205,13 @@ function! SetRustOptions()
   inoremap <buffer> ;; ->
 endfunction
 
-function! SetVHDLOptions()
-  setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab
-  setlocal colorcolumn=120
-  inoremap <buffer> ,, <=
-  inoremap <buffer> .. =>
-  inoremap <buffer> ;; ->
-  setlocal commentstring=--\ %s
+function! SetBeancountOptions()
+  let @q = 'da"kopgcchxjA ""'
+  inoremap <buffer> . .<C-\><C-O>:AlignCommodity<CR>
+  nnoremap <buffer> <localleader>= :AlignCommodity<CR>
+  nnoremap <buffer> <localleader># ?<C-r><C-a><CR>
+  nnoremap <buffer> <localleader>* /<C-r><C-a><CR>
+  nnoremap <buffer> <leader>R :%s/\<<C-r><C-a>\>/
 endfunction
 
 """"""""""""""""""""
@@ -230,9 +230,8 @@ let g:vimtex_compiler_latexmk = {'build_dir' : 'latexbuild',}
 " Beancount:
 let g:beancount_separator_col = 61
 
-" Neosnippet:
-imap <C-u>     <Plug>(neosnippet_expand_or_jump)
-smap <C-u>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-u>     <Plug>(neosnippet_expand_target)
-let g:neosnippet#enable_snipmate_compatibility = 1
-exec 'let g:neosnippet#snippets_directory='''.stdpath('data').'/plugged/vim-snippets/snippets,$CLOUD_HOME/Syncs/Vim/snippets'''
+" vnsip:
+" Expand or jump
+imap <expr> <C-u>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-u>'
+smap <expr> <C-u>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-u>'
+exec 'let g:vsnip_snippet_dir='''.stdpath('data').'/plugged/vim-snippets/snippets'''
