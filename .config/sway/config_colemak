@@ -1,0 +1,21 @@
+input type:keyboard {
+  xkb_layout "us"
+  xkb_variant "colemak"
+}
+
+set $left h
+set $down n
+set $up l
+set $right e
+set $k_launch s
+set $k_exit f
+set $k_splith b
+set $k_splitv v
+set $k_stack r
+set $k_tab w
+set $k_split f
+set $k_fulls t
+set $k_par a
+set $k_rsz p
+
+include ~/.config/sway/config_generic
