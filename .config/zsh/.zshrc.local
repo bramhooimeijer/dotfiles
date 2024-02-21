@@ -1,0 +1,50 @@
+export EDITOR=nvim
+export VISUAL=nvim
+
+hash -d od=/data/OD/pcBraho/
+hash -d bc=/data/Cloud/pcBraho/Administration/Finance
+hash -d ec=/data/EliamCloud/
+hash -d bce=/data/EliamCloud/Administration/Finance
+hash -d r=/data/Repos
+hash -d it=/data/OD/pcBraho/Hobbies/IT/
+
+alias graphviz='dot -Tx11'
+alias vim='nvim'
+alias allvpnon='sudo wg-quick up pps-all'
+alias allvpnoff='sudo wg-quick down pps-all'
+alias vpnon='sudo wg-quick up pps'
+alias vpnoff='sudo wg-quick down pps'
+alias vpn='sudo wg'
+
+# Set keymapping to VI-mode in zsh
+bindkey -v
+setopt vi
+bindkey "^?" backward-delete-char #Fixes backspace
+
+# Define the token and register it with grml
+function virtual_env_prompt () {
+    REPLY=${VIRTUAL_ENV+(${VIRTUAL_ENV:t}) }
+}
+grml_theme_add_token virtual-env -f virtual_env_prompt '%F{magenta}' '%f'
+
+# Make the prompt use the token
+zstyle ':prompt:grml:left:setup' items rc change-root user at host path virtual-env vcs percent
+
+# Create a function to detect cmd mode for vi
+function zle-line-init zle-keymap-select {
+    VIM_PROMPT="[% NORMAL]%"
+    RPS1="${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/} $EPS1"
+    zle reset-prompt
+}
+
+# Bind that function. Set the timeout to 0.1
+zle -N zle-line-init
+zle -N zle-keymap-select
+
+alias config='/usr/bin/git --git-dir=$HOME/.config/.dotgit --work-tree=$HOME'
+
+# Start tmux if available and if interactive. Attach to current session, such that detaching stays possible.
+if command -v tmux &> /dev/null && [ -n "$PS1" ]  && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+	# Attach to current session, detaching still possible
+	tmux attach || exec tmux -2
+fi
