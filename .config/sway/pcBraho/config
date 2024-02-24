@@ -1,0 +1,18 @@
+set $laptop    "AU Optronics 0x5B2D Unknown"
+set $home_main "Philips Consumer Electronics Company PHL 279P1 UK82103004352"
+set $home_secd "Acer Technologies Acer KA270H T3QEE0014200"
+
+output $home_main resolution 1920x1080 position 0,0
+# output $home_main resolution 3840x2160 scale 2 position 0,0
+output $home_secd resolution 1920x1080 position 1920,0
+output $laptop resolution 1920x1080
+
+# clam-shell: Bind lid to display enable/disable
+bindswitch --reload --locked lid:on output $laptop disable
+bindswitch --reload --locked lid:off output $laptop enable
+# ensure clam-shell is not re-activated on reload:
+exec_always 'sh -c "if grep -q open /proc/acpi/button/lid/LID/state; then\
+    swaymsg output <LAPTOP> enable\
+  else\
+    swaymsg output <LAPTOP> disable\
+  fi"'

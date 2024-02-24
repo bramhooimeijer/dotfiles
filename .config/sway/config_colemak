@@ -1,3 +1,6 @@
+# We use separate config files for separate keyboard layouts
+# This allows to switch configs by linking config to the correct layout
+
 input type:keyboard {
   xkb_layout "us"
   xkb_variant "colemak"

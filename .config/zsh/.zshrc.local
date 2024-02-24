@@ -44,8 +44,11 @@ zle -N zle-keymap-select
 
 alias config='/usr/bin/git --git-dir=$HOME/.config/.dotgit --work-tree=$HOME'
 
+# Start sway on tty1
+if command -v sway &> /dev/null && [ "$(tty)" = "/dev/tty1" ]; then
+	exec sway
 # Start tmux if available and if interactive. Attach to current session, such that detaching stays possible.
-if command -v tmux &> /dev/null && [ -n "$PS1" ]  && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+elif command -v tmux &> /dev/null && [ -n "$PS1" ]  && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
 	# Attach to current session, detaching still possible
 	tmux attach || exec tmux -2
 fi
