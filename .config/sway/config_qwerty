@@ -7,15 +7,19 @@ set $left h
 set $down j
 set $up u
 set $right k
-set $k_launch d
-set $k_exit e
-set $k_splith b
-set $k_splitv v
-set $k_stack s
-set $k_tab w
-set $k_split e
-set $k_fulls f
-set $k_par a
-set $k_rsz r
+
+set $k_d d
+set $k_e e
+set $k_b b
+set $k_v v
+set $k_s s
+set $k_S S
+set $k_w w
+set $k_e e
+set $k_f f
+set $k_a a
+set $k_r r
+set $k_R R
+set $k_l l
 
 include ~/.config/sway/config_generic

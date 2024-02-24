@@ -8,6 +8,7 @@ hash -d bce=/data/EliamCloud/Administration/Finance
 hash -d r=/data/Repos
 hash -d it=/data/OD/pcBraho/Hobbies/IT/
 
+alias sway='WLR_DRM_NO_ATOMIC=1 sway'
 alias graphviz='dot -Tx11'
 alias vim='nvim'
 alias allvpnon='sudo wg-quick up pps-all'

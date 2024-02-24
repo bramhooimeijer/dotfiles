@@ -2,6 +2,8 @@
 set $mod Mod4
 set $term foot
 set $menu dmenu_path | wmenu | xargs swaymsg exec --
+set $grimshot /usr/share/sway/scripts/grimshot
+set $lock "swaylock -f -c 000000"
 
 ### Host specific configs
 include "~/.config/sway/$(hostnamectl hostname)/config"
@@ -9,17 +11,38 @@ include "~/.config/sway/$(hostnamectl hostname)/config"
 output * bg ~/.images/wallpaper.jpg fill
 
 ### Idle configuration
-#
-# Example configuration:
-#
-# exec swayidle -w \
-#          timeout 300 'swaylock -f -c 000000' \
-#          timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
-#          before-sleep 'swaylock -f -c 000000'
-#
-# This will lock your screen after 300 seconds of inactivity, then turn off
-# your displays after another 300 seconds, and turn your screens back on when
-# resumed. It will also lock your screen before your computer goes to sleep.
+exec swayidle -w \
+    timeout 300 'exec $lock' \
+    timeout 330 'swaymsg "output * power off"' \
+        resume 'swaymsg "output * power on"' \
+    timeout 5 'if pgrep -x swaylock; then swaymsg "output * power off"; fi' \
+        resume 'swaymsg "output * power on"' \
+    before-sleep 'exec $lock' \
+    before-sleep 'playerctl pause' \
+        after-resume 'swaymsg "output * power on"' \
+
+### Default workspaces
+# assign [class="^Chromium$"] $ws1
+# assign [class="^code-oss$"] $ws2
+# assign [class="^Signal$"] $wsF1
+# assign [class="^Riot$"] $wsF1
+# assign [class="^Mailspring$"] $wsF2
+# assign [app_id="virt-manager"] $wsF8
+# assign [class="^KeePass2$"] $wsF11
+# assign [class="^Spotify$"] $wsF12
+
+### Default autostart
+#exec spotify
+#exec keepass
+#exec signal
+#exec firefox
+
+### Input configuration
+input type:touchpad {
+    dwt enabled
+    tap enabled
+    natural_scroll enabled
+}
 
 ### Key bindings
 # Basics:
@@ -28,13 +51,31 @@ output * bg ~/.images/wallpaper.jpg fill
     # Kill focused window
     bindsym $mod+Shift+q kill
     # Start your launcher
-    bindsym $mod+$k_launch exec $menu
+    bindsym $mod+$k_d exec $menu
     # Drag floating windows by holding down $mod and left mouse button.
     floating_modifier $mod normal
     # Reload the configuration file
     bindsym $mod+Shift+c reload
-    # Exit sway (logs you out of your Wayland session)
-    bindsym $mod+Shift+$k_exit exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+
+# Special keys
+    bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
+    bindsym XF86MonBrightnessUp exec brightnessctl set 5%+
+    bindsym --locked XF86AudioRaiseVolume exec wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+
+    bindsym --locked XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+    bindsym --locked XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+    bindsym --locked XF86AudioPlay exec playerctl play-pause
+    bindsym --locked XF86AudioNext exec playerctl next
+    bindsym --locked XF86AudioPrev exec playerctl previous
+    bindsym XF86Search exec $menu
+    # printscreen
+    bindsym Print exec $grimshot copy area
+    bindsym Control+Print exec $grimshot copy output
+    bindsym Alt+Print exec $grimshot copy active
+    # ditto with shift, but save to file
+    bindsym Shift+Print exec $grimshot save area ~/Images/screenshots/scrn-$(date +"%Y-%m-%d-%H-%M-%S").png
+    bindsym Shift+Control+Print exec $grimshot save output ~/Images/screenshots/scrn-$(date +"%Y-%m-%d-%H-%M-%S").png
+    bindsym Shift+Alt+Print exec $grimshot save active ~/Images/screenshots/scrn-$(date +"%Y-%m-%d-%H-%M-%S").png
+
 # Moving around:
     # Move your focus around
     bindsym $mod+$left focus left
@@ -54,6 +95,16 @@ output * bg ~/.images/wallpaper.jpg fill
     bindsym $mod+Shift+Down move down
     bindsym $mod+Shift+Up move up
     bindsym $mod+Shift+Right move right
+    # Move the focused workspace with the same, but add Control
+    bindsym $mod+Control+Shift+$left move workspace to output left
+    bindsym $mod+Control+Shift+$down move workspace to output down
+    bindsym $mod+Control+Shift+$up move workspace to output up
+    bindsym $mod+Control+Shift+$right move workspace to output right
+    bindsym $mod+Control+Shift+Left move workspace to output left
+    bindsym $mod+Control+Shift+Down move workspace to output down
+    bindsym $mod+Control+Shift+Up move workspace to output up
+    bindsym $mod+Control+Shift+Right move workspace to output right
+
 # Workspaces:
     # Switch to workspace
     bindsym $mod+1 workspace number 1
@@ -77,32 +128,30 @@ output * bg ~/.images/wallpaper.jpg fill
     bindsym $mod+Shift+8 move container to workspace number 8
     bindsym $mod+Shift+9 move container to workspace number 9
     bindsym $mod+Shift+0 move container to workspace number 10
+
 # Layout:
-    bindsym $mod+$k_splith splith
-    bindsym $mod+$k_splitv splitv
+    bindsym $mod+$k_b splith
+    bindsym $mod+$k_v splitv
     # Switch the current container between different layout styles
-    bindsym $mod+$k_stack layout stacking
-    bindsym $mod+$k_tab layout tabbed
-    bindsym $mod+$k_split layout toggle split
-    bindsym $mod+$k_fulls fullscreen
+    bindsym $mod+$k_s layout stacking
+    bindsym $mod+$k_w layout tabbed
+    bindsym $mod+$k_e layout toggle split
+    bindsym $mod+$k_f fullscreen
     bindsym $mod+Shift+space floating toggle
     bindsym $mod+space focus mode_toggle
-    bindsym $mod+$k_par focus parent
+    bindsym $mod+$k_a focus parent
+
 # Scratchpad:
     bindsym $mod+Shift+minus move scratchpad
     bindsym $mod+minus scratchpad show
+
 # Resizing containers:
 mode "resize" {
-    # left will shrink the containers width
-    # right will grow the containers width
-    # up will shrink the containers height
-    # down will grow the containers height
     bindsym $left resize shrink width 10px
     bindsym $down resize grow height 10px
     bindsym $up resize shrink height 10px
     bindsym $right resize grow width 10px
 
-    # Ditto, with arrow keys
     bindsym Left resize shrink width 10px
     bindsym Down resize grow height 10px
     bindsym Up resize shrink height 10px
@@ -111,9 +160,25 @@ mode "resize" {
     # Return to default mode
     bindsym Return mode "default"
     bindsym Escape mode "default"
-    bindsym $mod+$k_rsz mode "default"
+    bindsym $mod+$k_r mode "default"
 }
-bindsym $mod+$k_rsz mode "resize"
+bindsym $mod+$k_r mode "resize"
+
+set $mode_system System: ($k_l) lock, ($k_e) logout, ($k_r) reboot, ($k_S) shutdown, ($k_R) UEFI
+mode "$mode_system" {
+    bindsym $k_l exec $lock, mode "default"
+    bindsym $k_e exit
+    bindsym $k_s exec systemctl suspend, mode "default"
+    bindsym $k_r exec systemctl reboot, mode "default"
+    bindsym Shift+$k_s exec systemctl poweroff -i, mode "default"
+    bindsym Shift+$k_r exec systemctl reboot --firmware-setup, mode "default"
+    # Return to default mode
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym $mod+Shift+$k_e mode "default"
+}
+bindsym $mod+Shift+$k_e mode "$mode_system"
+bindsym $mod+$k_l exec $lock
 
 ### Status Bar:
 bar {
@@ -131,3 +196,4 @@ bar {
 }
 
 include /etc/sway/config.d/*
+exec "systemctl --user import-environment {,WAYLAND_}DISPLAY SWAYSOCK"
