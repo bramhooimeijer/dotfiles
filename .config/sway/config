@@ -4,7 +4,7 @@ set {
   $term foot
   $menu exec foot -a foot-launcher bash -c 'compgen -c | grep -v fzf | sort -u | fzf --layout=reverse | xargs -r swaymsg -t command exec'
   $grimshot /usr/share/sway/scripts/grimshot
-  $lock swaylock -f -c 000000
+  $lock swaylock -e -F -l -c 000000
 
   # workspaces
   $ws1 1:1
@@ -55,7 +55,7 @@ input type:touchpad {
 
 ### Style
 output * bg ~/.images/wallpaper.jpg fill
-font pango:SFMono Nerd Font Medium 10
+font pango:SFProDisplay Nerd Font Medium 10
 hide_edge_borders smart
 
 ### Idle configuration
@@ -63,13 +63,11 @@ hide_edge_borders smart
 # Lock quickly after
 # Turn off screen directly after lock
 exec swayidle -w \
-  timeout 300 'swaymsg "output * power off"' \
-    resume 'swaymsg "output * power on"' \
-  timeout 320 'exec $lock' \
+  lock 'exec $lock' \
+  timeout 180 'exec $lock' \
   timeout 5 'if pgrep -x swaylock; then swaymsg "output * power off"; fi' \
     resume 'swaymsg "output * power on"' \
-  before-sleep 'exec $lock' \
-  before-sleep 'playerctl pause' \
+  before-sleep 'exec playerctl pause; exec $lock' \
     after-resume 'swaymsg "output * power on"' \
 
 ### Default workspaces
@@ -88,7 +86,7 @@ for_window [app_id="^foot-launcher$"] floating enable, border none, opacity 0.8
 exec spotify
 exec keepassxc
 exec signal-desktop
-exec firefox; swaymsg "workspace $ws4"; swaymsg "layout tabbed"
+exec firefox
 
 ### Key bindings
 # Drag floating windows by holding down $mod and left mouse button.
