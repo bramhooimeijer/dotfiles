@@ -8,7 +8,6 @@ hash -d bce=/data/EliamCloud/Administration/Finance
 hash -d r=/data/Repos
 hash -d it=/data/OD/pcBraho/Hobbies/IT/
 
-alias sway='WLR_DRM_NO_ATOMIC=1 sway'
 alias graphviz='dot -Tx11'
 alias vim='nvim'
 alias allvpnon='sudo wg-quick up pps-all'
@@ -46,7 +45,7 @@ alias config='/usr/bin/git --git-dir=$HOME/.config/.dotgit --work-tree=$HOME'
 
 # Start sway on tty1
 if command -v sway &> /dev/null && [ "$(tty)" = "/dev/tty1" ]; then
-	exec sway
+	WLR_DRM_NO_ATOMIC=1 exec sway > /var/log/sway.log 2>&1
 # Start tmux if available and if interactive. Attach to current session, such that detaching stays possible.
 elif command -v tmux &> /dev/null && [ -n "$PS1" ]  && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
 	# Attach to current session, detaching still possible

@@ -1,0 +1,270 @@
+### Variables
+set {
+  $mod Mod4
+  $term foot
+  $menu exec foot -a foot-launcher bash -c 'compgen -c | grep -v fzf | sort -u | fzf --layout=reverse | xargs -r swaymsg -t command exec'
+  $grimshot /usr/share/sway/scripts/grimshot
+  $lock "swaylock -f -c 000000"
+
+  # workspaces
+  $ws1 1:1
+  $ws2 2:2
+  $ws3 3:3
+  $ws4 4:
+  $ws5 5:5
+  $ws6 6:6
+  $ws7 7:7
+  $ws8 8:8
+  $ws9 9:9
+  $ws0 10:10
+  $wsF1 11:
+  $wsF2 12:12
+  $wsF3 13:13
+  $wsF4 14:14
+  $wsF5 15:15
+  $wsF6 16:16
+  $wsF7 17:17
+  $wsF8 18:18
+  $wsF9 19:19
+  $wsF10 20:20
+  $wsF11 21:
+  $wsF12 22:
+
+  # binds
+  $left h
+  $down j
+  $up u
+  $right k
+}
+
+### Host specific configs
+include "~/.config/sway/$(hostnamectl hostname)/config"
+
+### Input config
+input type:keyboard {
+  xkb_layout us,us
+  xkb_variant ,colemak
+  xkb_options grp:win_space_toggle
+}
+
+input type:touchpad {
+  dwt enabled
+  tap enabled
+  natural_scroll enabled
+}
+
+### Style
+output * bg ~/.images/wallpaper.jpg fill
+font pango:SFMono Nerd Font Medium 10
+hide_edge_borders smart
+
+### Idle configuration
+exec swayidle -w \
+  timeout 300 'exec $lock' \
+  timeout 330 'swaymsg "output * power off"' \
+    resume 'swaymsg "output * power on"' \
+  timeout 5 'if pgrep -x swaylock; then swaymsg "output * power off"; fi' \
+    resume 'swaymsg "output * power on"' \
+  before-sleep 'exec $lock' \
+  before-sleep 'playerctl pause' \
+    after-resume 'swaymsg "output * power on"' \
+
+### Default workspaces
+assign {
+ [app_id="^firefox$"]                 $ws4
+ [class="^Signal$"]                   $wsF1
+ [app_id="^org.keepassxc.KeePassXC$"] $wsF11
+ [class="^Spotify$"]                  $wsF12
+}
+
+# Layout defaults
+#for_window [app_id="^gnome-calculator$"] floating enable
+for_window [app_id="^foot-launcher$"] floating enable, border none, opacity 0.8
+
+### Default autostart
+exec spotify
+exec keepassxc
+exec signal-desktop
+exec firefox; swaymsg "workspace $ws4"; swaymsg "layout tabbed"
+
+### Key bindings
+# Drag floating windows by holding down $mod and left mouse button.
+floating_modifier $mod normal
+bindsym --to-code {
+  ## Basics:
+  # Kill focused window
+  $mod+Shift+q kill
+  # Start launcher
+  $mod+d exec $menu
+  # Reload the configuration file
+  $mod+Shift+c reload
+
+  ## Applications
+  # Start a terminal
+  $mod+Return exec $term
+
+  ## Special keys
+  XF86MonBrightnessDown exec brightnessctl set 5%-
+  XF86MonBrightnessUp exec brightnessctl set 5%+
+  --locked XF86AudioRaiseVolume exec wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+
+  --locked XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+  --locked XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+  --locked XF86AudioPlay exec playerctl play-pause
+  --locked XF86AudioNext exec playerctl next
+  --locked XF86AudioPrev exec playerctl previous
+  XF86Search exec $menu
+
+  # printscreen
+  Print exec $grimshot copy area
+  Control+Print exec $grimshot copy output
+  Alt+Print exec $grimshot copy active
+
+  # ditto with shift, but save to file
+  Shift+Print exec $grimshot save area ~/Images/screenshots/scrn-$(date +"%Y-%m-%d-%H-%M-%S").png
+  Shift+Control+Print exec $grimshot save output ~/Images/screenshots/scrn-$(date +"%Y-%m-%d-%H-%M-%S").png
+  Shift+Alt+Print exec $grimshot save active ~/Images/screenshots/scrn-$(date +"%Y-%m-%d-%H-%M-%S").png
+
+  ## Moving around:
+  # Move your focus around
+  $mod+$left focus left
+  $mod+$down focus down
+  $mod+$up focus up
+  $mod+$right focus right
+  $mod+Left focus left
+  $mod+Down focus down
+  $mod+Up focus up
+  $mod+Right focus right
+
+  # Move the focused window with the same, but add Shift
+  $mod+Shift+$left move left
+  $mod+Shift+$down move down
+  $mod+Shift+$up move up
+  $mod+Shift+$right move right
+  $mod+Shift+Left move left
+  $mod+Shift+Down move down
+  $mod+Shift+Up move up
+  $mod+Shift+Right move right
+
+  # Move the focused workspace with the same, but add Control
+  $mod+Control+Shift+$left move workspace to output left
+  $mod+Control+Shift+$down move workspace to output down
+  $mod+Control+Shift+$up move workspace to output up
+  $mod+Control+Shift+$right move workspace to output right
+  $mod+Control+Shift+Left move workspace to output left
+  $mod+Control+Shift+Down move workspace to output down
+  $mod+Control+Shift+Up move workspace to output up
+  $mod+Control+Shift+Right move workspace to output right
+
+  ## Workspaces:
+  # Switch to workspace
+  $mod+1 workspace $ws1
+  $mod+2 workspace $ws2
+  $mod+3 workspace $ws3
+  $mod+4 workspace $ws4
+  $mod+5 workspace $ws5
+  $mod+6 workspace $ws6
+  $mod+7 workspace $ws7
+  $mod+8 workspace $ws8
+  $mod+9 workspace $ws9
+  $mod+0 workspace $ws0
+  $mod+F1 workspace $wsF1
+  $mod+F2 workspace $wsF2
+  $mod+F3 workspace $wsF3
+  $mod+F4 workspace $wsF4
+  $mod+F5 workspace $wsF5
+  $mod+F6 workspace $wsF6
+  $mod+F7 workspace $wsF7
+  $mod+F8 workspace $wsF8
+  $mod+F9 workspace $wsF9
+  $mod+F10 workspace $wsF10
+  $mod+F11 workspace $wsF11
+  $mod+F12 workspace $wsF12
+
+  # Move focused container to workspace
+  $mod+Shift+1 move container to workspace $ws1
+  $mod+Shift+2 move container to workspace $ws2
+  $mod+Shift+3 move container to workspace $ws3
+  $mod+Shift+4 move container to workspace $ws4
+  $mod+Shift+5 move container to workspace $ws5
+  $mod+Shift+6 move container to workspace $ws6
+  $mod+Shift+7 move container to workspace $ws7
+  $mod+Shift+8 move container to workspace $ws8
+  $mod+Shift+9 move container to workspace $ws9
+  $mod+Shift+0 move container to workspace $ws10
+  $mod+Shift+F1 move container to workspace $wsF1
+  $mod+Shift+F2 move container to workspace $wsF2
+  $mod+Shift+F3 move container to workspace $wsF3
+  $mod+Shift+F4 move container to workspace $wsF4
+  $mod+Shift+F5 move container to workspace $wsF5
+  $mod+Shift+F6 move container to workspace $wsF6
+  $mod+Shift+F7 move container to workspace $wsF7
+  $mod+Shift+F8 move container to workspace $wsF8
+  $mod+Shift+F9 move container to workspace $wsF9
+  $mod+Shift+F10 move container to workspace $wsF10
+  $mod+Shift+F11 move container to workspace $wsF11
+  $mod+Shift+F12 move container to workspace $wsF12
+
+  ## Layout:
+  $mod+b splith
+  $mod+v splitv
+  # Switch the current container between different layout styles
+  $mod+s layout stacking
+  $mod+w layout tabbed
+  $mod+e layout toggle split
+  $mod+f fullscreen
+  #$mod+Shift+space floating toggle
+  #$mod+space focus mode_toggle
+  $mod+a focus parent
+
+  ## Scratchpad:
+  $mod+Shift+minus move scratchpad
+  $mod+minus scratchpad show
+}
+
+  # Resizing containers:
+mode "resize" {
+  bindsym --to-code {
+    $left resize shrink width 10px
+    $down resize grow height 10px
+    $up resize shrink height 10px
+    $right resize grow width 10px
+
+    Left resize shrink width 10px
+    Down resize grow height 10px
+    Up resize shrink height 10px
+    Right resize grow width 10px
+
+    # Return to default mode
+    Return mode "default"
+    Escape mode "default"
+    $mod+r mode "default"
+  }
+}
+bindsym --to-code $mod+r mode "resize"
+
+### System mode
+set $mode_system System: (l) lock, (e) logout, (r) reboot, (S) shutdown, (R) UEFI
+mode "$mode_system" {
+  bindsym --to-code {
+    l exec $lock, mode "default"
+    e exit
+    s exec systemctl suspend, mode "default"
+    r exec systemctl reboot, mode "default"
+    Shift+s exec systemctl poweroff -i, mode "default"
+    Shift+r exec systemctl reboot --firmware-setup, mode "default"
+    # Return to default mode
+    Return mode "default"
+    Escape mode "default"
+    $mod+Shift+e mode "default"
+  }
+}
+bindsym --to-code $mod+Shift+e mode "$mode_system"
+bindsym --to-code $mod+l exec $lock
+
+### Status Bar:
+bar {
+  swaybar_command waybar
+}
+
+include /etc/sway/config.d/*
+exec "systemctl --user import-environment {,WAYLAND_}DISPLAY SWAYSOCK"
