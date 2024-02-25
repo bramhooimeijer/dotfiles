@@ -3,3 +3,7 @@ width=350
 padding=10
 margin=10
 default-timeout=5000
+
+[urgency=high]
+border-color=#ee2e24
+background-color=#991e17

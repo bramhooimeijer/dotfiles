@@ -4,7 +4,7 @@ set {
   $term foot
   $menu exec foot -a foot-launcher bash -c 'compgen -c | grep -v fzf | sort -u | fzf --layout=reverse | xargs -r swaymsg -t command exec'
   $grimshot /usr/share/sway/scripts/grimshot
-  $lock "swaylock -f -c 000000"
+  $lock swaylock -f -c 000000
 
   # workspaces
   $ws1 1:1
@@ -44,7 +44,7 @@ include "~/.config/sway/$(hostnamectl hostname)/config"
 input type:keyboard {
   xkb_layout us,us
   xkb_variant ,colemak
-  xkb_options grp:win_space_toggle
+  xkb_options grp:menu_toggle
 }
 
 input type:touchpad {
@@ -59,10 +59,13 @@ font pango:SFMono Nerd Font Medium 10
 hide_edge_borders smart
 
 ### Idle configuration
+# Turn off screen first (to remind me of timeout and prevent lock in case of viewing)
+# Lock quickly after
+# Turn off screen directly after lock
 exec swayidle -w \
-  timeout 300 'exec $lock' \
-  timeout 330 'swaymsg "output * power off"' \
+  timeout 300 'swaymsg "output * power off"' \
     resume 'swaymsg "output * power on"' \
+  timeout 320 'exec $lock' \
   timeout 5 'if pgrep -x swaylock; then swaymsg "output * power off"; fi' \
     resume 'swaymsg "output * power on"' \
   before-sleep 'exec $lock' \
@@ -212,8 +215,8 @@ bindsym --to-code {
   $mod+w layout tabbed
   $mod+e layout toggle split
   $mod+f fullscreen
-  #$mod+Shift+space floating toggle
-  #$mod+space focus mode_toggle
+  $mod+Shift+space floating toggle
+  $mod+space focus mode_toggle
   $mod+a focus parent
 
   ## Scratchpad:
@@ -268,3 +271,10 @@ bar {
 
 include /etc/sway/config.d/*
 exec "systemctl --user import-environment {,WAYLAND_}DISPLAY SWAYSOCK"
+
+### Input config
+input type:keyboard {
+  xkb_layout us,us
+  xkb_variant colemak,
+  xkb_options grp:menu_toggle
+}
