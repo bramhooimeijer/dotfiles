@@ -1,7 +1,7 @@
 {
     "modules-left": ["sway/workspaces", "sway/mode", "sway/scratchpad", "custom/media"],
     "modules-center": ["clock"],
-    "modules-right": ["privacy", "idle_inhibitor", "pulseaudio", "backlight", "network", "memory", "cpu", "temperature", "sway/language", "battery", "tray"],
+    "modules-right": ["privacy", "idle_inhibitor", "pulseaudio", "backlight", "memory", "cpu", "temperature", "sway/language", "battery", "tray"],
     // Modules configuration
     "sway/workspaces": {
         "disable-scroll": true,
@@ -63,17 +63,17 @@
         "format-charging": " {capacity}%",
         "format-alt": "{time} {icon}",
     },
-    "network": {
-        "format-wifi": "  {essid} ({signalStrength}%)",
-        "format-ethernet": " {ipaddr}/{cidr}",
-        "tooltip-format": " {ifname} via {gwaddr}",
-        "format-linked": " {ifname} (No IP)",
-        "format-disconnected": "  Disconnected",
-    },
+    //"network": {
+    //    "format-wifi": "  {essid} ({signalStrength}%)",
+    //    "format-ethernet": " {ipaddr}/{cidr}",
+    //    "tooltip-format": " {ifname} via {gwaddr}",
+    //    "format-linked": " {ifname} (No IP)",
+    //    "format-disconnected": "  Disconnected",
+    //},
     "pulseaudio": {
         "format": "{icon} {volume}% {format_source}",
-        "format-bluetooth": "{icon} {volume}% {format_source}",
-        "format-bluetooth-muted": "{icon} 婢 {format_source}",
+        "format-bluetooth": "{icon}  {volume}% {format_source}",
+        "format-bluetooth-muted": "{icon}  婢 {format_source}",
         "format-muted": "婢 {format_source}",
         "format-source": " {volume}%",
         "format-source-muted": "",

@@ -24,7 +24,7 @@ set {
   $ws9 9:9
   $ws0 10:10
   $wsF1 11:
-  $wsF2 12:12
+  $wsF2 12:
   $wsF3 13:13
   $wsF4 14:14
   $wsF5 15:15
@@ -70,7 +70,7 @@ hide_edge_borders smart
 # Turn off screen directly after lock
 exec swayidle -w \
   lock 'exec $lock' \
-  timeout 180 'exec $lock' \
+  timeout 300 'exec $lock' \
   timeout 5 'if pgrep -x swaylock; then swaymsg "output * power off"; fi' \
     resume 'swaymsg "output * power on"' \
   before-sleep 'exec playerctl pause; exec $lock' \
@@ -80,9 +80,12 @@ exec swayidle -w \
 assign {
  [app_id="^firefox$"]                 $ws4
  [class="^Signal$"]                   $wsF1
+ [class="^obsidian$"]                 $wsF2
  [app_id="^org.keepassxc.KeePassXC$"] $wsF11
  [class="^Spotify$"]                  $wsF12
 }
+# prevent assign for floating windows
+for_window [floating] move container to workspace current
 
 # Layout defaults
 #for_window [app_id="^gnome-calculator$"] floating enable
@@ -93,6 +96,8 @@ exec spotify
 exec keepassxc
 exec signal-desktop
 exec firefox
+exec obsidian
+exec nm-applet
 exec wl-paste --watch cliphist store
 
 ### Key bindings
