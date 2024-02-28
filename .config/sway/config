@@ -2,9 +2,15 @@
 set {
   $mod Mod4
   $term foot
-  $menu exec foot -a foot-launcher bash -c 'compgen -c | grep -v fzf | sort -u | fzf --layout=reverse | xargs -r swaymsg -t command exec'
+  $fzf fzf --layout=reverse
+  $ffloat foot -a ffloat bash -c
+  $menu $ffloat 'compgen -c | grep -v fzf | sort -u | $fzf | xargs -r swaymsg -t command exec'
+  $cliphist $ffloat 'cliphist list | $fzf | cliphist decode | wl-copy'
+  $clipdel $ffloat 'cliphist list | $fzf | cliphist delete; wl-copy -c'
+  $clipclear ~/.config/sway/scripts/cliphist_clear.sh
   $grimshot /usr/share/sway/scripts/grimshot
-  $lock swaylock -e -F -l -c 000000
+  $lock ~/.config/sway/scripts/lock.sh
+  $tmux ~/.config/sway/scripts/tmux.sh
 
   # workspaces
   $ws1 1:1
@@ -80,13 +86,14 @@ assign {
 
 # Layout defaults
 #for_window [app_id="^gnome-calculator$"] floating enable
-for_window [app_id="^foot-launcher$"] floating enable, border none, opacity 0.8
+for_window [app_id="^ffloat$"] floating enable, border none, opacity 0.8
 
 ### Default autostart
 exec spotify
 exec keepassxc
 exec signal-desktop
 exec firefox
+exec wl-paste --watch cliphist store
 
 ### Key bindings
 # Drag floating windows by holding down $mod and left mouse button.
@@ -102,7 +109,17 @@ bindsym --to-code {
 
   ## Applications
   # Start a terminal
-  $mod+Return exec $term
+  $mod+Return exec $term $tmux
+  $mod+Shift+Return exec $term
+  # dismiss Messages from Mako
+  $mod+m exec makoctl dismiss
+  $mod+Shift+m exec makoctl dismiss --all
+  # Start file explorer
+  $mod+n exec doublecmd
+  # clipboard
+  $mod+x exec $cliphist
+  $mod+z exec $clipdel
+  $mod+Shift+z exec $clipclear
 
   ## Special keys
   XF86MonBrightnessDown exec brightnessctl set 5%-
@@ -248,11 +265,11 @@ set $mode_system System: (l) lock, (e) logout, (r) reboot, (S) shutdown, (R) UEF
 mode "$mode_system" {
   bindsym --to-code {
     l exec $lock, mode "default"
-    e exit
-    s exec systemctl suspend, mode "default"
-    r exec systemctl reboot, mode "default"
-    Shift+s exec systemctl poweroff -i, mode "default"
-    Shift+r exec systemctl reboot --firmware-setup, mode "default"
+    e exec $clipclear; exit
+    s exec $clipclear; exec systemctl suspend, mode "default"
+    r exec $clipclear; exec systemctl reboot, mode "default"
+    Shift+s exec $clipclear; exec systemctl poweroff -i, mode "default"
+    Shift+r exec $clipclear; exec systemctl reboot --firmware-setup, mode "default"
     # Return to default mode
     Return mode "default"
     Escape mode "default"
@@ -269,10 +286,3 @@ bar {
 
 include /etc/sway/config.d/*
 exec "systemctl --user import-environment {,WAYLAND_}DISPLAY SWAYSOCK"
-
-### Input config
-input type:keyboard {
-  xkb_layout us,us
-  xkb_variant colemak,
-  xkb_options grp:menu_toggle
-}
