@@ -8,7 +8,7 @@ set {
   $cliphist $ffloat 'cliphist list | $fzf | cliphist decode | wl-copy'
   $clipdel $ffloat 'cliphist list | $fzf | cliphist delete; wl-copy -c'
   $clipclear ~/.config/sway/scripts/cliphist_clear.sh
-  $grimshot /usr/share/sway/scripts/grimshot
+  $grimshot ~/.config/sway/scripts/grimshot
   $lock ~/.config/sway/scripts/lock.sh
   $tmux ~/.config/sway/scripts/tmux.sh
 
