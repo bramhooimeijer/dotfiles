@@ -1,7 +1,7 @@
 {
     "modules-left": ["sway/workspaces", "sway/mode", "sway/scratchpad", "custom/media"],
     "modules-center": ["clock"],
-    "modules-right": ["privacy", "idle_inhibitor", "pulseaudio", "backlight", "memory", "cpu", "temperature", "sway/language", "battery", "tray"],
+    "modules-right": ["privacy", "custom/dnd", "idle_inhibitor", "pulseaudio", "backlight", "memory", "cpu", "temperature", "sway/language", "battery", "tray"],
     // Modules configuration
     "sway/workspaces": {
         "disable-scroll": true,
@@ -71,7 +71,7 @@
     //    "format-disconnected": "  Disconnected",
     //},
     "pulseaudio": {
-        "format": "{icon} {volume}% {format_source}",
+        "format": "{icon}  {volume}% {format_source}",
         "format-bluetooth": "{icon}  {volume}% {format_source}",
         "format-bluetooth-muted": "{icon}  婢 {format_source}",
         "format-muted": "婢 {format_source}",
@@ -100,5 +100,14 @@
         "escape": true,
         "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
         // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
+    },
+    "custom/dnd": {
+      "return-type": "json",
+      "exec-if": "command -v makoctl",
+      "exec": "~/.config/sway/scripts/mako.sh -s",
+      "format": "{icon}",
+      "format-icons": [" ", " "],
+      "on-click": "~/.config/sway/scripts/mako.sh -t",
+      "interval": 1,
     }
 }

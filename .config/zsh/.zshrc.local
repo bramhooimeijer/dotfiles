@@ -46,5 +46,5 @@ alias config='/usr/bin/git --git-dir=$HOME/.config/.dotgit --work-tree=$HOME'
 
 # Start sway on tty1
 if command -v sway &> /dev/null && [ "$(tty)" = "/dev/tty1" ]; then
-	WLR_DRM_NO_ATOMIC=1 exec sway > /var/log/sway.log 2>&1
+	XDG_CURRENT_DESKTOP=sway WLR_DRM_NO_ATOMIC=1 exec sway > /var/log/sway.log 2>&1
 fi
