@@ -78,11 +78,11 @@ exec swayidle -w \
 
 ### Default workspaces
 assign {
- [app_id="^firefox$"]                 $ws4
- [class="^Signal$"]                   $wsF1
- [class="^obsidian$"]                 $wsF2
- [app_id="^org.keepassxc.KeePassXC$"] $wsF11
- [class="^Spotify$"]                  $wsF12
+ [app_id="^firefox$"]                  $ws4
+ [app_id="^Signal$"]                   $wsF1
+ [app_id="^obsidian$"]                 $wsF2
+ [app_id="^org.keepassxc.KeePassXC$"]  $wsF11
+ [class="^Spotify$"]                   $wsF12
 }
 # prevent assign for floating windows
 for_window [floating] move container to workspace current
@@ -99,6 +99,7 @@ exec firefox
 exec obsidian
 exec nm-applet
 exec wl-paste --watch cliphist store
+exec onedrivegui
 
 ### Key bindings
 # Drag floating windows by holding down $mod and left mouse button.
@@ -266,15 +267,16 @@ mode "resize" {
 bindsym --to-code $mod+r mode "resize"
 
 ### System mode
-set $mode_system System: (l) lock, (e) logout, (r) reboot, (S) shutdown, (R) UEFI
+set $mode_system System: (l) lock, (e) logout, (r) reboot, (s) suspend, (S) shutdown, (R) UEFI, (W) Windows
 mode "$mode_system" {
   bindsym --to-code {
     l exec $lock, mode "default"
     e exec $clipclear; exit
-    s exec $clipclear; exec systemctl suspend, mode "default"
+    s exec $lock; exec systemctl suspend, mode "default"
     r exec $clipclear; exec systemctl reboot, mode "default"
     Shift+s exec $clipclear; exec systemctl poweroff -i, mode "default"
     Shift+r exec $clipclear; exec systemctl reboot --firmware-setup, mode "default"
+    Shift+W exec $clipclear; exec sudo grub-reboot 3; exec systemctl reboot, mode "default"
     # Return to default mode
     Return mode "default"
     Escape mode "default"
@@ -283,6 +285,7 @@ mode "$mode_system" {
 }
 bindsym --to-code $mod+Shift+e mode "$mode_system"
 bindsym --to-code $mod+l exec $lock
+bindsym --to-code $mod+Shift+l exec $lock; exec systemctl suspend
 
 ### Status Bar:
 bar {
