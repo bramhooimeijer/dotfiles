@@ -1,0 +1,3 @@
+[screencast]
+exec_before=~/.config/sway/scripts/mako.sh -d
+exec_after=~/.config/sway/scripts/mako.sh -n
