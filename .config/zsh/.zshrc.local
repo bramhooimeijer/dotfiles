@@ -1,6 +1,7 @@
 export EDITOR=nvim
 export VISUAL=nvim
 export PIP_REQUIRE_VIRTUALENV=true
+fpath=($ZDOTDIR/.zfunc/ $fpath)
 
 hash -d od=/data/OD/pcBraho/
 hash -d bc=/data/Cloud/pcBraho/Administration/Finance
