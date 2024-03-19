@@ -27,6 +27,7 @@ if has('nvim')
     Plug 'hrsh7th/cmp-omni'         " cmp source for omnipath
     Plug 'hrsh7th/cmp-vsnip'        " cmp source for vsnip
     Plug 'hrsh7th/nvim-cmp'         " cmp itself
+    Plug 'github/copilot.vim'
 
     " Snippets:
     Plug 'hrsh7th/vim-vsnip'
@@ -62,8 +63,6 @@ exec 'luafile '.stdpath('config').'/lua/misc.lua'
 """"""""""""
 " Options: "
 """"""""""""
-
-set modeline
 
 " Visual:
 set number relativenumber
@@ -235,3 +234,12 @@ let g:beancount_separator_col = 61
 imap <expr> <C-u>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-u>'
 smap <expr> <C-u>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-u>'
 exec 'let g:vsnip_snippet_dir='''.stdpath('data').'/plugged/vim-snippets/snippets'''
+
+" Copilot:
+imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
+imap <F1> <Plug>(copilot-suggest)
+imap <F2> <Plug>(copilot-dismiss)
+imap <silent><script><expr> <F3> copilot#Accept("\<CR>")
+imap <F4> <Plug>(copilot-next)
+imap <F5> <Plug>(copilot-previous)
+let g:copilot_no_tab_map = v:true
