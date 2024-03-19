@@ -1,7 +1,7 @@
 {
     "modules-left": ["sway/workspaces", "sway/mode", "sway/scratchpad", "custom/media"],
     "modules-center": ["clock"],
-    "modules-right": ["privacy", "custom/dnd", "idle_inhibitor", "pulseaudio", "backlight", "memory", "cpu", "temperature", "sway/language", "battery", "tray"],
+    "modules-right": ["privacy", "custom/dnd", "idle_inhibitor", "pulseaudio", "backlight", "memory", "cpu", "sway/language", "battery", "tray"],
     // Modules configuration
     "sway/workspaces": {
         "disable-scroll": true,
@@ -33,8 +33,13 @@
     },
     "clock": {
         // "timezone": "America/New_York",
-        "format": "{:%Y-%m-%d   %H:%M}",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format": "{:%Y-%m-%d    %H:%M}",
+        "tooltip-format": "<big>{:%Y %B W%W}</big>\n<tt><small>{calendar}</small></tt>",
+        "actions": {
+                "on-click-right": "mode",
+                "on-scroll-up": "shift_up",
+                "on-scroll-down": "shift_down"
+        }
     },
     "cpu": {
         "format": "  {usage}%",
