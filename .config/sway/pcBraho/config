@@ -13,8 +13,4 @@ output $work_main resolution 1920x1080 position 0,0
 bindswitch --reload --locked lid:on output $laptop disable
 bindswitch --reload --locked lid:off output $laptop enable
 # ensure clam-shell is not re-activated on reload:
-exec_always 'sh -c "if grep -q open /proc/acpi/button/lid/LID/state; then\
-    swaymsg output <LAPTOP> enable\
-  else\
-    swaymsg output <LAPTOP> disable\
-  fi"'
+exec_always ~/.config/sway/pcBraho/clam-shell.sh "$laptop"
