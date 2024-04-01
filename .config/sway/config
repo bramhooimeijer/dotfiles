@@ -65,16 +65,18 @@ font pango:SFProDisplay Nerd Font Medium 10
 hide_edge_borders smart
 
 ### Idle configuration
-# Turn off screen first (to remind me of timeout and prevent lock in case of viewing)
-# Lock quickly after
-# Turn off screen directly after lock
-exec swayidle -w \
-  lock 'exec $lock' \
-  timeout 300 'exec $lock' \
-  timeout 5 'if pgrep -x swaylock; then swaymsg "output * power off"; fi' \
-    resume 'swaymsg "output * power on"' \
-  before-sleep 'exec playerctl pause; exec $lock' \
-    after-resume 'swaymsg "output * power on"' \
+# turn off screen after 5 mins, lock 10 seconds later
+# Turn off screen 5 seconds after lock
+set $dispoff swaymsg "output * power off" > /dev/null
+set $dispon swaymsg "output * power on" > /dev/null
+exec swayidle -w lock 'exec $lock; $dispoff' \
+  timeout 5 'if pgrep -x swaylock; then $dispoff; fi' \
+  resume '$dispon' \
+  timeout 300 '$dispoff' \
+  resume '$dispon' \
+  timeout 310 'exec $lock'\
+  before-sleep 'exec playerctl pause; exec $lock; $dispoff' \
+  after-resume '$dispon'
 
 ### Default workspaces
 assign {
