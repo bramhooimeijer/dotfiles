@@ -52,6 +52,8 @@ function activate_venv {
       else
         if [[ "$current_dir" == "/" ]]; then
           echo "Reached / without finding $folder_name"
+          echo "Try to activate virtual environment in /home/braho/.scripts/.venv"
+          source "/home/braho/.scripts/$folder_name/bin/activate"
           break
         fi
         current_dir=$(dirname "$current_dir")
