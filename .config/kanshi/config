@@ -1,3 +1,8 @@
+profile home-nolaptop {
+  output "Philips Consumer Electronics Company PHL 279P1 UK82103004352" resolution 3840x2160 scale 2 position 0,0
+  output "Acer Technologies Acer KA270H T3QEE0014200" resolution 1920x1080 position 1920,0
+}
+
 profile home {
   output "AU Optronics 0x5B2D Unknown" resolution 1920x1080 position 0,0
   output "Philips Consumer Electronics Company PHL 279P1 UK82103004352" resolution 1920x1080 position 1920,0
