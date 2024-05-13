@@ -1,5 +1,5 @@
 {
-    "modules-left": ["sway/workspaces", "sway/mode", "sway/scratchpad", "custom/media"],
+    "modules-left": ["sway/workspaces", "sway/mode", "sway/scratchpad"],
     "modules-center": ["clock"],
     "modules-right": ["privacy", "custom/dnd", "idle_inhibitor", "pulseaudio", "backlight", "memory", "cpu", "sway/language", "battery", "tray"],
     // Modules configuration
@@ -22,8 +22,8 @@
     "idle_inhibitor": {
         "format": "{icon}",
         "format-icons": {
-            "activated": " ",
-            "deactivated": " "
+            "activated": "",
+            "deactivated": ""
         },
         "tooltip": "false"
     },
@@ -48,11 +48,11 @@
     "memory": {
         "format": "  {}%"
     },
-    "temperature": {
-        "hwmon-path":"/sys/class/hwmon/hwmon6/temp1_input",
-        "critical-threshold": 80,
-        "format": " {temperatureC}°C",
-    },
+    //"temperature": {
+    //    "hwmon-path":"/sys/class/hwmon/hwmon6/temp1_input",
+    //    "critical-threshold": 80,
+    //    "format": " {temperatureC}°C",
+    //},
     "backlight": {
         // "device": "acpi_video1",
         "format": "{icon} {percent}%",
@@ -95,25 +95,47 @@
         "on-click-right": "pavucontrol",
         "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
     },
-    "custom/media": {
-        "format": "{icon} {}",
-        "return-type": "json",
-        "max-length": 40,
-        "format-icons": {
-            "spotify": "",
-            "default": "🎜"
-        },
-        "escape": true,
-        "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
-        // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
-    },
+    //"custom/media": {
+    //    "format": "{icon} {}",
+    //    "return-type": "json",
+    //    "max-length": 40,
+    //    "format-icons": {
+    //        "spotify": "",
+    //        "default": "🎜"
+    //    },
+    //    "escape": true,
+    //    "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
+    //    // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
+    //},
     "custom/dnd": {
-      "return-type": "json",
-      "exec-if": "command -v makoctl",
-      "exec": "~/.config/sway/scripts/mako.sh -s",
-      "format": "{icon}",
-      "format-icons": [" ", " "],
-      "on-click": "~/.config/sway/scripts/mako.sh -t",
-      "interval": 1,
-    }
+        "return-type": "json",
+        "exec-if": "command -v makoctl",
+        "exec": "~/.config/sway/scripts/mako.sh -s",
+        "format": "{icon}",
+        "format-icons": [" ", " "],
+        "on-click": "~/.config/sway/scripts/mako.sh -t",
+        "interval": 1,
+    },
+    "privacy": {
+        "icon-spacing": 4,
+        "icon-size": 18,
+        "transition-duration": 250,
+        "modules": [
+            {
+                "type": "screenshare",
+                "tooltip": true,
+                "tooltip-icon-size": 24
+            },
+            {
+                "type": "audio-out",
+                "tooltip": true,
+                "tooltip-icon-size": 24
+            },
+            {
+                "type": "audio-in",
+                "tooltip": true,
+                "tooltip-icon-size": 24
+            }
+        ]
+    },
 }

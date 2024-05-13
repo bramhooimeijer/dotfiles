@@ -29,7 +29,7 @@ button:hover {
 }
 
 #workspaces button {
-    padding: 1 10px;
+    padding: 1px 10px;
     background-color: transparent;
     color: #ffffff;
 }
@@ -67,14 +67,15 @@ button:hover {
 #mode,
 #idle_inhibitor,
 #scratchpad,
+#privacy-item,
 #mpd {
-    padding: 0 6px;
+    padding: 0px 6px;
     color: #ffffff;
 }
 
 #window,
 #workspaces {
-    margin: 0 4px;
+    margin: 0px 4px;
 }
 
 /* If workspaces is the leftmost module, omit left margin */
@@ -109,12 +110,6 @@ label:focus {
     background-color: #000000;
 }
 
-#custom-media {
-    background-color: #66cc99;
-    color: #2a5c45;
-    min-width: 100px;
-}
-
 #temperature.critical {
     background-color: #eb4d4b;
 }
@@ -124,26 +119,5 @@ label:focus {
 }
 
 #scratchpad.empty {
-	background-color: transparent;
-}
-
-#privacy {
-    padding: 0;
-  }
-
-#privacy-item {
-    padding: 0 5px;
-    color: white;
-}
-
-#privacy-item.screenshare {
-    background-color: #cf5700;
-}
-
-#privacy-item.audio-in {
-    background-color: #1ca000;
-}
-
-#privacy-item.audio-out {
-    background-color: #0069d4;
+    background-color: transparent;
 }
