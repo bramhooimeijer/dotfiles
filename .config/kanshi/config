@@ -1,0 +1,10 @@
+profile home {
+  output "AU Optronics 0x5B2D Unknown" resolution 1920x1080 position 0,0
+  output "Philips Consumer Electronics Company PHL 279P1 UK82103004352" resolution 1920x1080 position 1920,0
+  output "Acer Technologies Acer KA270H T3QEE0014200" resolution 1920x1080 position 3840,0
+}
+
+profile work {
+  output "AU Optronics 0x5B2D Unknown" resolution 1920x1080 position 1920,0
+  output "Samsung Electric Company LF24T450F HNAT901220" resolution 1920x1080 position 0,0
+}

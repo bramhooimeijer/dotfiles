@@ -95,18 +95,19 @@ for_window [floating] move container to workspace current
 
 # Layout defaults
 for_window [app_id="^qalculate-qt$"] floating enable
+for_window [app_id="io.github.Qalculate.qalculate-qt"] floating enable
 for_window [app_id="^ffloat$"] floating enable, border none, opacity 0.8
 
 ### Default autostart
 exec spotify
 exec keepassxc
-exec signal-desktop
 exec firefox
 exec obsidian
-exec nm-applet
-exec wl-paste --watch cliphist store
-exec onedrivegui
 exec mail
+exec signal-desktop
+
+# exec nm-applet
+exec wl-paste --watch cliphist store
 
 ### Key bindings
 # Drag floating windows by holding down $mod and left mouse button.
@@ -302,6 +303,8 @@ bindsym --to-code $mod+Shift+l exec $lock; exec systemctl suspend
 bar {
   swaybar_command waybar
 }
+
+exec kanshi
 
 include /etc/sway/config.d/*
 exec "systemctl --user import-environment {,WAYLAND_}DISPLAY SWAYSOCK"
