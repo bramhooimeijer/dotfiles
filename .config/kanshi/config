@@ -1,15 +1,65 @@
-profile home-nolaptop {
-  output "Philips Consumer Electronics Company PHL 279P1 UK82103004352" resolution 3840x2160 scale 2 position 0,0
-  output "Acer Technologies Acer KA270H T3QEE0014200" resolution 1920x1080 position 1920,0
+profile laptop-home {
+  output "AU Optronics 0x5B2D Unknown" {
+    mode 1920x1080
+    position 0,0
+  }
+  output "Philips Consumer Electronics Company PHL 279P1 UK82103004352" {
+    mode 1920x1080
+    position 1920,0
+  }
+  output "Acer Technologies Acer KA270H T3QEE0014200" {
+    mode 1920x1080
+    position 3840,0
+  }
+  exec swaymsg '[all] move workspace to "Acer Technologies Acer KA270H T3QEE0014200"'
+}
+
+profile laptop-Acer {
+  output "AU Optronics 0x5B2D Unknown" {
+    mode 1920x1080
+    position 0,0
+  }
+  output "Acer Technologies Acer KA270H T3QEE0014200" {
+    mode 1920x1080
+    position 1920,0
+  }
+  exec swaymsg '[all] move workspace to "Acer Technologies Acer KA270H T3QEE0014200"'
+}
+
+profile laptop-PHL {
+  output "AU Optronics 0x5B2D Unknown" {
+    mode 1920x1080
+    position 0,0
+  }
+  output "Philips Consumer Electronics Company PHL 279P1 UK82103004352" {
+    mode 1920x1080
+    position 1920,0
+  }
+  exec swaymsg '[all] move workspace to "Acer Technologies Acer KA270H T3QEE0014200"'
 }
 
 profile home {
-  output "AU Optronics 0x5B2D Unknown" resolution 1920x1080 position 0,0
-  output "Philips Consumer Electronics Company PHL 279P1 UK82103004352" resolution 1920x1080 position 1920,0
-  output "Acer Technologies Acer KA270H T3QEE0014200" resolution 1920x1080 position 3840,0
+  output "Philips Consumer Electronics Company PHL 279P1 UK82103004352" {
+    mode 3840x2160
+    scale 2
+    position 0,0
+  }
+  output "Acer Technologies Acer KA270H T3QEE0014200" {
+    mode 1920x1080
+    position 1920,0
+  }
+  exec swaymsg '[all] move workspace to "Acer Technologies Acer KA270H T3QEE0014200"'
 }
 
+
 profile work {
-  output "AU Optronics 0x5B2D Unknown" resolution 1920x1080 position 1920,0
-  output "Samsung Electric Company LF24T450F HNAT901220" resolution 1920x1080 position 0,0
+  output "AU Optronics 0x5B2D Unknown" {
+    mode 1920x1080
+    position 1920,0
+  }
+  output "Samsung Electric Company LF24T450F HNAT901220" {
+    mode 1920x1080
+    position 0,0
+  }
+  exec swaymsg '[all] move workspace to "Samsung Electric Company LF24T450F HNAT901220"'
 }

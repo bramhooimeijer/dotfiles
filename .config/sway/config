@@ -10,6 +10,7 @@ set {
   $clipclear ~/.config/sway/scripts/cliphist_clear.sh
   $grimshot ~/.config/sway/scripts/grimshot
   $lock ~/.config/sway/scripts/lock.sh
+  $background ~/.config/sway/scripts/background.sh
   $tmux ~/.config/sway/scripts/tmux.sh
 
   # workspaces
@@ -60,7 +61,7 @@ input type:touchpad {
 }
 
 ### Style
-output * bg ~/.images/wallpaper.jpg fill
+exec_always $background
 font pango:SFProDisplay Nerd Font Medium 10
 hide_edge_borders smart
 
@@ -108,6 +109,7 @@ exec signal-desktop
 
 # exec nm-applet
 exec wl-paste --watch cliphist store
+exec kanshi
 
 ### Key bindings
 # Drag floating windows by holding down $mod and left mouse button.
@@ -304,7 +306,7 @@ bar {
   swaybar_command waybar
 }
 
-exec kanshi
+exec_always 'kanshictl reload'
 
 include /etc/sway/config.d/*
 exec "systemctl --user import-environment {,WAYLAND_}DISPLAY SWAYSOCK"
