@@ -4,10 +4,12 @@ profile laptop-home {
     position 0,0
   }
   output "Philips Consumer Electronics Company PHL 279P1 UK82103004352" {
+    enable
     mode 1920x1080
     position 1920,0
   }
   output "Acer Technologies Acer KA270H T3QEE0014200" {
+    enable
     mode 1920x1080
     position 3840,0
   }
@@ -20,6 +22,7 @@ profile laptop-Acer {
     position 0,0
   }
   output "Acer Technologies Acer KA270H T3QEE0014200" {
+    enable
     mode 1920x1080
     position 1920,0
   }
@@ -32,19 +35,22 @@ profile laptop-PHL {
     position 0,0
   }
   output "Philips Consumer Electronics Company PHL 279P1 UK82103004352" {
+    enable
     mode 1920x1080
     position 1920,0
   }
-  exec swaymsg '[all] move workspace to "Acer Technologies Acer KA270H T3QEE0014200"'
+  exec swaymsg '[all] move workspace to "Philips Consumer Electronics Company PHL 279P1 UK82103004352"'
 }
 
 profile home {
   output "Philips Consumer Electronics Company PHL 279P1 UK82103004352" {
+    enable
     mode 3840x2160
     scale 2
     position 0,0
   }
   output "Acer Technologies Acer KA270H T3QEE0014200" {
+    enable
     mode 1920x1080
     position 1920,0
   }
@@ -58,6 +64,7 @@ profile work {
     position 1920,0
   }
   output "Samsung Electric Company LF24T450F HNAT901220" {
+    enable
     mode 1920x1080
     position 0,0
   }

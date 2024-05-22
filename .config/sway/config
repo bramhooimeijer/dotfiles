@@ -68,8 +68,9 @@ hide_edge_borders smart
 ### Idle configuration
 # turn off screen after 5 mins, lock 10 seconds later
 # Turn off screen 5 seconds after lock
-set $dispoff swaymsg "output * power off" > /dev/null
-set $dispon swaymsg "output * power on" > /dev/null
+set $dispoff swaymsg "output * power off"
+# Sometimes doesn't turn on after suspend, so try twice
+set $dispon swaymsg "output * power on"; sleep 2; swaymsg "output * power on"
 exec swayidle -w lock 'exec $lock; $dispoff' \
   timeout 5 'if pgrep -x swaylock; then $dispoff; fi' \
   resume '$dispon' \
@@ -122,6 +123,8 @@ bindsym --to-code {
   $mod+d exec $menu
   # Reload the configuration file
   $mod+Shift+c reload
+  # Whenever it has trouble enabling the screen after idle...
+  --locked $mod+Shift+d swaymsg "output * power on"
 
   ## Applications
   # Start a terminal, and
