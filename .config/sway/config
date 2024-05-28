@@ -14,18 +14,22 @@ set {
   $tmux ~/.config/sway/scripts/tmux.sh
 
   # workspaces
-  $ws1 1:1
-  $ws2 2:2
-  $ws3 3:
-  $ws4 4:
+  $wsChat 1:
+  $ws1 $wsChat
+  $wsMail 2:
+  $ws2 $wsMail
+  $wsObs 3:
+  $ws3 $wsObs
+  $wsFF 4:
+  $ws4 $wsFF
   $ws5 5:5
   $ws6 6:6
   $ws7 7:7
   $ws8 8:8
   $ws9 9:9
   $ws0 10:10
-  $wsF1 11:
-  $wsF2 12:
+  $wsF1 11:11
+  $wsF2 12:12
   $wsF3 13:13
   $wsF4 14:14
   $wsF5 15:15
@@ -34,8 +38,10 @@ set {
   $wsF8 18:18
   $wsF9 19:19
   $wsF10 20:20
-  $wsF11 21:
-  $wsF12 22:
+  $wsFKP 21:
+  $wsF11 $wsFKP
+  $wsFSP 22:
+  $wsF12 $wsFSP
 
   # binds
   $left h
@@ -72,25 +78,25 @@ set $dispoff swaymsg "output * power off"
 # Sometimes doesn't turn on after suspend, so try twice
 set $dispon swaymsg "output * power on"; sleep 2; swaymsg "output * power on"
 exec swayidle -w lock 'exec $lock; $dispoff' \
-  timeout 5 'if pgrep -x swaylock; then $dispoff; fi' \
-  resume '$dispon' \
-  timeout 300 '$dispoff' \
-  resume '$dispon' \
-  timeout 310 'exec $lock'\
+  timeout 300 'exec $lock'\
   before-sleep 'exec playerctl pause; exec $lock; $dispoff' \
   after-resume '$dispon'
 
+exec swayidle timeout 5 'if pgrep -x swaylock; then $dispoff; fi' \
+  resume '$dispon' \
+
 ### Default workspaces
 assign {
- # [app_id="^mailspring$"]               $ws3
- [class="^Mailspring$"]                $ws3
- [app_id="^firefox$"]                  $ws4
- [app_id="^signal$"]                   $wsF1
- [app_id="^Slack$"]                    $wsF1
- [class="^Discord$"]                   $wsF1
- [app_id="^obsidian$"]                 $wsF2
- [app_id="^org.keepassxc.KeePassXC$"]  $wsF11
- [class="^Spotify$"]                   $wsF12
+ [app_id="^mailspring$"]               $wsMail
+ [class="^Mailspring$"]                $wsMail
+ [app_id="^signal$"]                   $wsChat
+ [app_id="^Slack$"]                    $wsChat
+ [app_id="^chrome-hnpfjngllnobngcgfapefoaidbinmjnm-Default$"]   $wsChat
+ [app_id="^chrome-hnpfjngllnobngcgfapefoaidbinmjnm-Profile_1$"] $wsChat
+ [class="^Discord$"]                   $wsChat
+ [app_id="^obsidian$"]                 $wsObs
+ [app_id="^org.keepassxc.KeePassXC$"]  $wsFKP
+ [class="^Spotify$"]                   $wsFSP
 }
 # prevent assign for floating windows
 for_window [floating] move container to workspace current
@@ -103,10 +109,12 @@ for_window [app_id="^ffloat$"] floating enable, border none, opacity 0.8
 ### Default autostart
 exec spotify
 exec keepassxc
-exec firefox
+workspace $wsFF; exec firefox
 exec obsidian
 exec mail
 exec signal-desktop
+exec whatsapp-private
+exec whatsapp-business
 
 # exec nm-applet
 exec wl-paste --watch cliphist store
@@ -124,7 +132,7 @@ bindsym --to-code {
   # Reload the configuration file
   $mod+Shift+c reload
   # Whenever it has trouble enabling the screen after idle...
-  --locked $mod+Shift+d swaymsg "output * power on"
+  --locked $mod+Shift+d 'swaymsg "output * power on"; echo "Tried to power on outputs"'
 
   ## Applications
   # Start a terminal, and
