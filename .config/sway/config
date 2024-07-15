@@ -70,6 +70,7 @@ input type:touchpad {
 exec_always $background
 font pango:SFProDisplay Nerd Font Medium 10
 hide_edge_borders smart
+default_border pixel
 
 ### Idle configuration
 # turn off screen after 5 mins, lock 10 seconds later
@@ -93,6 +94,8 @@ assign {
  [app_id="^Slack$"]                    $wsChat
  [app_id="^chrome-hnpfjngllnobngcgfapefoaidbinmjnm-Default$"]   $wsChat
  [app_id="^chrome-hnpfjngllnobngcgfapefoaidbinmjnm-Profile_1$"] $wsChat
+ [app_id="^chrome-cifhbcnohmdccbgoicgdjpfamggdegmo-Profile_1$"] $wsChat
+ [app_id="^chrome-faolnafnngnfdaknnbpnkhgohbobgegn-Profile_1$"] $wsMail
  [class="^Discord$"]                   $wsChat
  [app_id="^obsidian$"]                 $wsObs
  [app_id="^org.keepassxc.KeePassXC$"]  $wsFKP
@@ -107,15 +110,19 @@ for_window [app_id="io.github.Qalculate.qalculate-qt"] floating enable
 for_window [app_id="^ffloat$"] floating enable, border none, opacity 0.8
 
 ### Default autostart
-exec spotify
+workspace $wsFSP; exec spotify
 exec keepassxc
-workspace $wsFF; exec firefox
 exec obsidian
+# Mail clients
 exec mail
+exec outlook
+# Chat clients
 exec signal-desktop
 exec whatsapp-private
 exec whatsapp-business
-
+exec slack
+exec teams
+workspace $wsFF; exec firefox
 # exec nm-applet
 exec wl-paste --watch cliphist store
 exec kanshi

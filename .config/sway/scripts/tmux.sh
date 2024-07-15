@@ -1,2 +1,3 @@
 #!/bin/bash
-tmux -2 new -As0 2>&1 > /dev/null
+[ -z "$TMUX" ] && tmux -2 new -As0 > /dev/null 2>&1
+
