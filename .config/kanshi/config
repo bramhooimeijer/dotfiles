@@ -3,62 +3,38 @@ profile laptop-home {
     mode 1920x1080
     position 0,0
   }
-  output "Philips Consumer Electronics Company PHL 279P1 UK82103004352" {
+  output "LG Electronics LG ULTRAGEAR 403NTFA5W659" {
     enable
-    mode 1920x1080
+    mode 3440x1440
     position 1920,0
   }
   output "Acer Technologies Acer KA270H T3QEE0014200" {
     enable
     mode 1920x1080
-    position 3840,0
+    position 5360,0
+    transform "90"
   }
   exec swaymsg '[all] move workspace to "Acer Technologies Acer KA270H T3QEE0014200"'
 }
 
-profile laptop-Acer {
-  output "AU Optronics 0x5B2D Unknown" {
-    mode 1920x1080
-    position 0,0
-  }
-  output "Acer Technologies Acer KA270H T3QEE0014200" {
-    enable
-    mode 1920x1080
-    position 1920,0
-  }
-  exec swaymsg '[all] move workspace to "Acer Technologies Acer KA270H T3QEE0014200"'
-}
-
-profile laptop-PHL {
-  output "AU Optronics 0x5B2D Unknown" {
-    mode 1920x1080
-    position 0,0
-  }
-  output "Philips Consumer Electronics Company PHL 279P1 UK82103004352" {
-    enable
-    mode 1920x1080
-    position 1920,0
-  }
-  exec swaymsg '[all] move workspace to "Philips Consumer Electronics Company PHL 279P1 UK82103004352"'
-}
 
 profile home {
-  output "Philips Consumer Electronics Company PHL 279P1 UK82103004352" {
+  output "LG Electronics LG ULTRAGEAR 403NTFA5W659" {
     enable
-    mode 3840x2160
-    scale 2
-    position 0,0
+    mode 3440x1440
+    position 1920,0
   }
   output "Acer Technologies Acer KA270H T3QEE0014200" {
     enable
     mode 1920x1080
-    position 1920,0
+    position 5360,0
+    transform "90"
   }
   exec swaymsg '[all] move workspace to "Acer Technologies Acer KA270H T3QEE0014200"'
 }
 
 
-profile work {
+profile work-SS {
   output "AU Optronics 0x5B2D Unknown" {
     mode 1920x1080
     position 1920,0
@@ -66,7 +42,39 @@ profile work {
   output "Samsung Electric Company LF24T450F HNAT901220" {
     enable
     mode 1920x1080
+    scale 1.0
     position 0,0
   }
   exec swaymsg '[all] move workspace to "Samsung Electric Company LF24T450F HNAT901220"'
+}
+
+profile work-PHL {
+  output "Philips Consumer Electronics Company PHL 279P1 UK82103004352" {
+    enable
+    position 0,0
+    mode 3840x2160@60Hz
+    scale 1.5
+  }
+  output "AU Optronics 0x5B2D Unknown" {
+    mode 1920x1080
+    position 2560,0
+  }
+  exec swaymsg '[all] move workspace to "Philips Consumer Electronics Company PHL 279P1 UK82103004352"'
+}
+
+profile work-PHL2 {
+  output DP-2 {
+    enable
+    position 0,0
+    mode 3840x2160@60Hz
+    scale 1.5
+  }
+  output "AU Optronics 0x5B2D Unknown" {
+    mode 1920x1080
+    position 2560,0
+  }
+  output DP-1 {
+    disable
+  }
+  exec swaymsg '[all] move workspace to "Philips Consumer Electronics Company PHL 279P1 UK82103004352"'
 }
