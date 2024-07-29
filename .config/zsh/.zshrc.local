@@ -18,6 +18,7 @@ alias allvpnoff='sudo wg-quick down pps-all'
 alias vpnon='sudo wg-quick up pps'
 alias vpnoff='sudo wg-quick down pps'
 alias vpn='sudo wg'
+alias lh='ls -hAl --color=auto -v --group-directories-first'
 
 # Set keymapping to VI-mode in zsh
 bindkey -v
