@@ -21,8 +21,8 @@ profile laptop-home {
 profile home {
   output "LG Electronics LG ULTRAGEAR 403NTFA5W659" {
     enable
-    mode 3440x1440
-    position 1920,0
+    mode 3440x1440@85Hz
+    position 1920,240
   }
   output "Acer Technologies Acer KA270H T3QEE0014200" {
     enable
