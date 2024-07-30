@@ -68,5 +68,9 @@ alias config='/usr/bin/git --git-dir=$HOME/.config/.dotgit --work-tree=$HOME'
 
 # Start sway on tty1
 if command -v sway &> /dev/null && [ "$(tty)" = "/dev/tty1" ]; then
-	XDG_CURRENT_DESKTOP=sway WLR_DRM_NO_ATOMIC=1 exec sway > /var/log/sway.log 2>&1
+	XDG_CURRENT_DESKTOP=sway WLR_DRM_NO_ATOMIC=1 exec sway --unsupported-gpu > /var/log/sway.log 2>&1
+else
+  if command -v tmux &> /dev/null && { [ -n "$SSH_CONNECTION" ] || [ -n "$SSH_CLIENT" ]; } && [ -z "$TMUX" ]; then
+    tmux -2 new -As0 2>&1 > /dev/null
+  fi
 fi
