@@ -105,23 +105,6 @@ set splitright
 set clipboard=unnamed
 set undofile
 
-" Spelling:
-let spelldirectory=$CLOUD_HOME . '/Syncs/Vim/spell//'
-if ! isdirectory(expand(spelldirectory))
-  silent! call mkdir(expand(spelldirectory), 'p', 0700)
-endif
-execute "set spellfile=".spelldirectory . 'en.utf-8.add'
-
-augroup spellfiles
-  autocmd!
-  " Per file spellfile
-  autocmd BufNewFile,BufRead * let &l:spellfile .= ',' . expand('%:p:h') . '/.' .
-  \ expand('%:t') . '.utf-8.add'
-
-  " Per file type spellfile (FileType autocmd seems to fire before BufNewFile)
-  autocmd BufNewFile,BufRead *.tex set spell | execute "setlocal spellfile+=" . spelldirectory . 'tex.utf-8.add'
-augroup END
-
 " Files:
 set writebackup
 set fileformat=unix
