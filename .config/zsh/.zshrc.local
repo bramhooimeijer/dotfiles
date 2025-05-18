@@ -3,15 +3,6 @@ export PATH=/home/braho/.local/bin:$PATH
 fpath=($ZDOTDIR/.zfunc/ $fpath)
 
 alias graphviz='dot -Tx11'
-# if nvim is installed, use it as alias for vim
-if command -v nvim &> /dev/null; then
-    alias vim='nvim'
-    export EDITOR=nvim
-    export VISUAL=nvim
-else
-    export EDITOR=vim
-    export VISUAL=vim
-fi
 alias lh='ls -hAl --color=auto -v --group-directories-first'
 
 # Set keymapping to VI-mode in zsh
@@ -58,11 +49,10 @@ function activate_venv {
     done
 }
 
-# if .zshrc.local exists, source it. Use $ZDOTDIR if set, else $HOME
+# if .zshrc.local2 exists, source it. Use $ZDOTDIR if set, else $HOME
 if [[ -f "${ZDOTDIR:-$HOME}/.zshrc.local2" ]]; then
     source "${ZDOTDIR:-$HOME}/.zshrc.local2"
 fi
-
 
 alias config='/usr/bin/git --git-dir=$HOME/.config/.dotgit --work-tree=$HOME'
 
