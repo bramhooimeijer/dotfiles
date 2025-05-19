@@ -11,10 +11,6 @@ if has('win32')||has('win64')
   set viminfo+=nC:/Localdata/.vim
 endif
 
-if !exists('$CLOUD_HOME')
-  let $CLOUD_HOME=$HOME
-endif
-
 " gVIM specific
 if has('gui_running')
   set langmenu=en_US.UTF-8    " sets the language of the menu (gvim)
@@ -149,21 +145,10 @@ augroup fileOptions
  au BufNewFile,BufRead *.h let c_syntax_for_h = 1
  au Syntax c,cpp call SetCOptions()
  au Syntax python call SetPythonOptions()
- au Syntax beancount call SetBeancountOptions()
  au Syntax rust call SetRustOptions()
  au Syntax sh setlocal sts=0 sw=8 noexpandtab
  au Syntax vim setlocal commentstring=\"\ %s
 augroup END
-
-function! SetBeancountOptions()
-  let @q = 'da"kopgcchxjA ""'
-  inoremap <buffer> . .<C-\><C-O>:AlignCommodity<CR>
-  nnoremap <buffer> <localleader>= :AlignCommodity<CR>
-  vnoremap <buffer> <localleader>= :AlignCommodity<CR>
-  nnoremap <buffer> <localleader># ?<C-r><C-a><CR>
-  nnoremap <buffer> <localleader>* /<C-r><C-a><CR>
-  nnoremap <buffer> <leader>R :%s/\<<C-r><C-a>\>/
-endfunction
 
 function! SetPythonOptions()
   setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab
@@ -182,8 +167,6 @@ endfunction
 
 function! SetRustOptions()
   setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab
-  setlocal omnifunc=ale#completion#OmniFunc
-  let l:ale_completion_enabled = 1
   inoremap <buffer> ;; =>
 endfunction
 
@@ -195,120 +178,20 @@ endfunction
 nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
 
-" VimTex:
-let g:tex_flavor = 'latex'
-let g:tex_fast = "cmMprsSvV"
-let g:vimtex_compiler_latexmk = {'build_dir' : 'latexbuild',}
-
-" Mucomplete:
-" add neosnippets to mucomplete chain
-" path = directories. Omni = omni-complete. nsnp = neosnippet
-" keyn = local buffer. Dict = dictionary. Uspl = wrongly spelled
-let g:mucomplete#chains = {
-      \ 'vim'     : ['path', 'cmd', 'keyn'],
-      \ 'default' : ['path', 'omni', 'nsnp', 'keyn', 'user', 'dict', 'uspl']
-      \}
-let g:mucomplete#can_complete ={
-  \ 'rust': {
-    \ 'omni' : {t -> strlen(&l:omnifunc) > 0 && t =~# '\%(\k\|\.\|::\)$' }
-  \}
-\}
-let g:jedi#auto_vim_configuration = 0
-let g:jedi#popup_on_dot = 0
-
-" Neosnippet:
-imap <C-u>     <Plug>(neosnippet_expand_or_jump)
-smap <C-u>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-u>     <Plug>(neosnippet_expand_target)
-let g:neosnippet#enable_snipmate_compatibility = 1
-let g:neosnippet#snippets_directory='$HOME/.vim/plugged/vim-snippets/snippets,$CLOUD_HOME/Syncs/Vim/snippets'
-
-" ALE:
-let g:ale_linters = {
-      \   'python': ['flake8','pylint'],
-      \   'rust': ['cargo', 'analyzer'],
-      \   'verilog': ['svls', 'xvlog', 'iverilog'],
-      \   'verilog_systemverilog': ['svls', 'xvlog', 'iverilog'],
-      \   'systemverilog': ['svls','xvlog', 'iverilog'],
-      \   'c':      ['gcc'],
-      \   'cpp':    ['g++'],
-      \   'c++':    ['g++'],
-      \}
-let g:ale_fixers = {
-      \   'python': ['yapf', 'remove_trailing_lines', 'trim_whitespace'],
-      \   'rust': ['rustfmt', 'remove_trailing_lines', 'trim_whitespace'],
-      \   'c' : ['clang-format'],
-      \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-      \}
-let g:ale_linters_explicit = 1
-let g:ale_c_parse_makefile = 1
-let g:ale_c_parse_compile_commands = 0
-let g:ale_c_cc_executable = 'gcc'
-" Linux style C-formatting
-let g:ale_c_clangformat_options = '--style="{IndentWidth: 8, UseTab: Always, BreakBeforeBraces: Linux, AllowShortIfStatementsOnASingleLine: false, AllowShortFunctionsOnASingleLine: false, IndentCaseLabels: false, SortIncludes: false, AlignConsecutiveMacros: true}"'
-nnoremap <F5> :ALEFix<CR>
-
-" VimTex:
-let g:tex_flavor = 'latex'
-let g:tex_fast = "cmMprsSvV"
-let g:vimtex_compiler_latexmk = {'build_dir' : 'latexbuild',}
-
-" Beancount:
-let g:beancount_separator_col = 61
-
-" Python:
-let g:python_pep8_indent_multiline_string = -2
-
 " Plugins:
 call plug#begin('$HOME/.vim/plugged')
 " Completion:
-Plug 'lifepillar/vim-mucomplete'
-Plug 'wellle/tmux-complete.vim'
-
-" Snippets:
-Plug 'roxma/nvim-yarp'
-Plug 'roxma/vim-hug-neovim-rpc'
-Plug 'shougo/neosnippet.vim'
-Plug 'shougo/neosnippet-snippets'
-Plug 'honza/vim-snippets'
+" Plug 'lifepillar/vim-mucomplete'
+" Plug 'wellle/tmux-complete.vim'
 
 " Appearance:
-Plug 'itchyny/lightline.vim'                                              " Theme
-Plug 'ayu-theme/ayu-vim'                                                  " Colorscheme
-
 Plug 'junegunn/vim-easy-align'                                            " Improves = align using ga
 Plug 'tpope/vim-commentary'                                               " Toggle comment using gc
 Plug 'tpope/vim-surround'                                                 " Change/add surrounding ("[ etc
 Plug 'ludovicchabant/vim-gutentags'
 
-" File Specifics:
-Plug 'tpope/vim-apathy'                                                   " Set up $PATH correctly for C/C++/ObjectiveC/GO/JS/Lua/Python/Shell a.o.
-Plug 'dense-analysis/ale'
-" Plug 'vhda/verilog_systemverilog.vim', { 'for': 'verilog_systemverilog' } " Extensions for coding in .sv
-Plug 'lervag/vimtex', { 'for': 'tex' }                                    " Extensions for markup in .tex
-Plug 'nathangrigg/vim-beancount', { 'for': 'beancount' }                  " Arranges completion for use with beancount accounting software
-Plug 'rust-lang/rust.vim', { 'for': 'rust' }
-" Python:
-Plug 'tmhedberg/SimpylFold', { 'for': 'python' }                          " Fixes indentation in Python files
-Plug 'davidhalter/jedi-vim', { 'for': 'python' }                          " LSP for Python files
-Plug 'Vimjas/vim-python-pep8-indent', { 'for': 'python' }                 " Correctly indents next line
-
 call plug#end()
-
-function! GetSvlsProjRoot(buffer) abort
-    let l:svls_file = ale#path#FindNearestFile(a:buffer, '.svls.toml')
-    return !empty(l:svls_file) ? fnamemodify(l:svls_file, ':h') : ''
-endfunction
-
-call ale#linter#Define('verilog', {
-\   'name': 'svls',
-\   'lsp': 'stdio',
-\   'executable': 'svls',
-\   'command': '%e',
-\   'project_root': function('GetSvlsProjRoot'),
-\})
 
 " Colorscheme:
 set termguicolors
-let ayucolor="dark"
-colorscheme ayu
+colorscheme retrobox
